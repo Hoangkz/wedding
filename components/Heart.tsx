@@ -1,3 +1,4 @@
+"use client"
 export const Heart = () => {
     return <div className='flex justify-center my-4' style={{ width: "100%" }}>
         <div style={{ width: 30 }}>

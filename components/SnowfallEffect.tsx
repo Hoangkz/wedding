@@ -1,5 +1,5 @@
 // Example of a functional React component in a .tsx file
-
+"use client"
 import React from 'react';
 
 // The data from your provided HTML is for individual 'snowflakes'.

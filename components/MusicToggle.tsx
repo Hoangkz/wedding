@@ -85,10 +85,10 @@ export const MusicToggle: React.FC = () => {
             aria-label={isPlaying ? "Tắt nhạc nền" : "Bật nhạc nền"}
             className={`
                 cursor-pointer
-                fixed bottom-6 left-6
+                fixed bottom-20 left-6
                 p-2 text-white shadow-xl 
                 hover:scale-110 transition-all duration-300  
-                z-50 focus:outline-none 
+                z-1001 focus:outline-none 
                 ${!isPlaying ? 'animate-pulse' : 'animate-spin-slow shadow-2xl'}
             `}
             style={{

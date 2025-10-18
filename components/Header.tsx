@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import DesktopNav from './DesktopNav';
+import DesktopNav, { navItems } from './DesktopNav';
 import Link from 'next/link';
 import { Heart, Menu, X, ArrowRight, ArrowLeft } from 'lucide-react';
 
@@ -9,15 +9,6 @@ import { Heart, Menu, X, ArrowRight, ArrowLeft } from 'lucide-react';
 // import SnowfallEffect from './sections/SnowfallEffect'; 
 
 
-const mobileNavItems = [
-    { name: 'Home', href: '/#' },
-    { name: 'Cặp đôi', href: '/#couple' },
-    { name: 'Chuyện tình yêu', href: '/#story' },
-    { name: 'Lịch trình', href: '/#schedule' },
-    { name: 'Photo Album', href: '/#album' },
-    { name: 'Lời chúc', href: '/#wishes' },
-    { name: 'Mừng cưới', href: '/#gift' },
-];
 
 const Header: React.FC = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -59,10 +50,10 @@ const Header: React.FC = () => {
 
         const currentPath = getClientHashPath();
 
-        let index = mobileNavItems.findIndex(item => item.href === currentPath);
+        let index = navItems.findIndex(item => item.href === currentPath);
 
         if (index === -1) {
-            index = mobileNavItems.findIndex(item => item.href === active);
+            index = navItems.findIndex(item => item.href === active);
         }
 
         return index >= 0 ? index : 0;
@@ -90,7 +81,7 @@ const Header: React.FC = () => {
     const handleNavigation = (direction: 'prev' | 'next') => {
         // This function is only called on button clicks, so 'window' access is safe inside
         const currentIndex = getActiveIndex();
-        const totalItems = mobileNavItems.length;
+        const totalItems = navItems.length;
         let newIndex = currentIndex;
 
         if (direction === 'next') {
@@ -100,7 +91,7 @@ const Header: React.FC = () => {
         }
 
         if (newIndex !== currentIndex) {
-            const newHref = mobileNavItems[newIndex].href;
+            const newHref = navItems[newIndex].href;
             setActive(newHref);
             window.location.href = newHref;
         }
@@ -109,7 +100,7 @@ const Header: React.FC = () => {
 
     const currentIndex = getActiveIndex();
     const isFirst = currentIndex === 0;
-    const isLast = currentIndex === mobileNavItems.length - 1;
+    const isLast = currentIndex === navItems.length - 1;
 
 
     return (
@@ -151,7 +142,7 @@ const Header: React.FC = () => {
                         }`}
                 >
                     <ul className="flex flex-col p-4 space-y-2">
-                        {mobileNavItems.map((item) => (
+                        {navItems.map((item) => (
                             <li key={item.name} className="w-full">
                                 <Link
                                     href={item.href}
@@ -176,7 +167,7 @@ const Header: React.FC = () => {
                 )}
             </header>
 
-            <div className="fixed bottom-5 right-5 z-[998] flex space-x-5">
+            <div className="fixed bottom-5 right-5 z-[100] flex space-x-5">
                 <button
                     onClick={() => handleNavigation('prev')}
                     // disabled is correctly set based on isFirst

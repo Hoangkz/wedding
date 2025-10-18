@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, Users, HeartHandshake, Calendar, Image, MessageSquare, Gift, Phone } from 'lucide-react';
+import { Home, Users, HeartHandshake, Calendar, Image, MessageSquare, Gift, MailCheck } from 'lucide-react';
 
 interface NavItem {
     name: string;
@@ -11,14 +11,15 @@ interface NavItem {
     Icon: React.ElementType;
 }
 
-const navItems: NavItem[] = [
+export const navItems: NavItem[] = [
     { name: 'Home', href: '/', Icon: Home },
+    { name: 'Thư mời', href: '/#letter', Icon: MailCheck },
     { name: 'Cặp đôi', href: '/#couple', Icon: Users },
     { name: 'Chuyện tình yêu', href: '/#story', Icon: HeartHandshake },
-    { name: 'Lịch trình', href: '/#schedule', Icon: Calendar },
+    { name: 'Lịch trình', href: '/#wedding-events', Icon: Calendar },
     { name: 'Photo Album', href: '/#album', Icon: Image },
     { name: 'Lời chúc', href: '/#wishes', Icon: MessageSquare },
-    { name: 'Mừng cưới', href: '/#gift', Icon: Gift },
+    { name: 'Mừng cưới', href: '/#gifts', Icon: Gift },
 ];
 
 const DesktopNav: React.FC = () => {

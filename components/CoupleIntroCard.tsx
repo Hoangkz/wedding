@@ -1,6 +1,7 @@
-// components/CoupleIntroCard.jsx
-import React from 'react';
-import Image from 'next/image';
+"use client";
+import React from "react";
+import Image from "next/image";
+import { motion } from "framer-motion";
 
 type CoupleIntroCardProps = {
     type: string;
@@ -17,62 +18,105 @@ const CoupleIntroCard: React.FC<CoupleIntroCardProps> = ({
     imageSrc,
     fatherName,
     motherName,
-    bio
+    bio,
 }) => {
-    // 1. Cấu hình màu sắc & nội dung dựa trên 'type'
-    const isBride = type === 'bride';
-    const bgColor = isBride ? 'bg-red-500' : 'bg-blue-400'; // Màu Đỏ và Xanh Teal/Blue
-    const title = isBride ? 'CÔ DÂU' : 'CHÚ RỂ';
-
-    // Font chữ viết tay/hoa mỹ (Bạn cần import font tùy chỉnh để đạt hiệu ứng tốt nhất)
+    const isBride = type === "bride";
+    const accentColor = isBride
+        ? "from-rose-400 to-rose-600"
+        : "from-sky-400 to-blue-600";
+    const title = isBride ? "CÔ DÂU" : "CHÚ RỂ";
 
     return (
-        <div className={`w-full max-w-sm md:max-w-md lg:w-1/2 p-3 shadow-xl ${bgColor}`} >
-            <div className="text-center text-white pb-6">
+        <motion.div
+            initial={{ opacity: 0, y: 100 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: false, amount: 0.1 }} // chạy lại mỗi lần scroll đến
+            transition={{ duration: 1.2, ease: "easeOut" }}
+            className={`m-0 relative w-full max-w-sm md:max-w-md lg:w-1/2 p-6 rounded-3xl shadow-2xl backdrop-blur-md bg-white/10 border border-white/30`}
+        >
+            {/* Viền ánh kim */}
+            <div
+                className={`absolute inset-0 rounded-3xl bg-gradient-to-br ${accentColor} opacity-30 blur-xl`}
+            ></div>
 
-                {/* Tiêu đề CÔ DÂU / CHÚ RỂ */}
-                <h2 className=" text-xl md:text-2xl font-bold uppercase tracking-widest mb-4 border-b border-white/50 pb-2" >
+            <div className="relative z-10 text-center text-gray-800">
+                {/* Tiêu đề */}
+                <h2
+                    className={`text-lg md:text-xl font-semibold tracking-widest uppercase mb-4 text-transparent bg-clip-text bg-gradient-to-r ${accentColor}`}
+                >
                     {title}
                 </h2>
 
                 {/* Khung Ảnh */}
-                <div className="mx-auto w-48 h-48 md:w-56 md:h-56 rounded-full overflow-hidden border-4 border-white shadow-lg mb-6">
-                    {/* Sử dụng Next.js Image để tối ưu hóa, đảm bảo ảnh nằm trong thư mục public */}
+                <motion.div
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    whileInView={{ scale: 1, opacity: 1 }}
+                    viewport={{ once: false, amount: 0.2 }}
+                    transition={{ duration: 1, ease: "easeOut" }}
+                    className="mx-auto w-44 h-44 md:w-52 md:h-52 rounded-full overflow-hidden border-[6px] border-white shadow-[0_0_25px_rgba(0,0,0,0.15)] mb-6 relative"
+                >
                     <Image
                         src={imageSrc}
                         alt={name}
-                        width={224} // Kích thước cố định cho ảnh 56x56
-                        height={224}
-                        objectFit="cover"
-                        className="w-full h-full"
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 768px) 100vw, 33vw"
                     />
-                </div>
+                    <div className="absolute inset-0 rounded-full ring-2 ring-white/70 ring-offset-4 ring-offset-transparent"></div>
+                </motion.div>
 
-                {/* Tên Chính (Kiểu chữ viết tay) */}
-                <h1 className="text-4xl md:text-5xl font-serif mb-4 test " style={{ fontSize: 55 }}>
+                {/* Tên chính */}
+                <motion.h1
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: false, amount: 0.2 }}
+                    transition={{ delay: 0.2, duration: 1 }}
+                    className="test  text-4xl md:text-5xl font-bold mb-4"
+                    style={{ color: "azure" }}
+                >
                     {name}
-                </h1>
+                </motion.h1>
 
-                {/* Tên Phụ huynh */}
-                <div className="text-sm md:text-base font-light mb-3">
+                {/* Tên phụ huynh */}
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    viewport={{ once: false, amount: 0.3 }}
+                    transition={{ delay: 0.3, duration: 1 }}
+                    className="text-sm md:text-base text-gray-700 mb-4 leading-relaxed"
+                >
                     <p>
-                        Ông: <strong>
-                            {fatherName}
-                        </strong>
+                        Ông: <strong className="font-medium">{fatherName}</strong>
                     </p>
                     <p>
-                        Bà: <strong>
-                            {motherName}
-                        </strong>
+                        Bà: <strong className="font-medium">{motherName}</strong>
                     </p>
-                </div>
+                </motion.div>
 
                 {/* Tiểu sử */}
-                <div className="text-base font-light leading-relaxed text-justify px-2 md:px-4">
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: false, amount: 0.3 }}
+                    transition={{ delay: 0.4, duration: 1 }}
+                    className={`text-base font-light leading-relaxed text-justify px-2 md:px-6 ${isBride ? "text-rose-700" : "text-blue-700"
+                        }`}
+                >
                     {bio}
-                </div>
+                </motion.div>
+
+
+
+                {/* Decorative bottom border */}
+                <motion.div
+                    initial={{ scaleX: 0 }}
+                    whileInView={{ scaleX: 1 }}
+                    viewport={{ once: false, amount: 0.3 }}
+                    transition={{ delay: 0.5, duration: 1 }}
+                    className={`mt-6 mx-auto w-2/3 h-[2px] bg-gradient-to-r ${accentColor} rounded-full origin-left`}
+                ></motion.div>
             </div>
-        </div >
+        </motion.div>
     );
 };
 

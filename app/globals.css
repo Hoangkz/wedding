@@ -188,13 +188,11 @@
   text-align: center;
   visibility: visible;
   box-sizing: border-box;
-  font: inherit;
   vertical-align: middle;
   font-weight: 500;
   line-height: 1.1;
-  color: inherit;
   font-family: 'Great Vibes', cursive;
   text-transform: capitalize;
-  font-size: 66px;
+  font-size: 55px;
   display: block;
 }

@@ -1,88 +1,104 @@
-// components/sections/Schedule.tsx
-import React from 'react';
-import { MapPin, Clock, Church, Martini } from 'lucide-react';
-import { Heart1 } from '../Heart';
+"use client";
+import { motion } from "framer-motion";
+import FloatingHearts from "../FloatingIcons";
 
-interface Event {
-    time: string;
-    title: string;
-    location: string;
-    address: string;
-    Icon: React.ElementType;
-}
+const WeddingEventsPage = () => {
+    const events = [
+        {
+            title: "Lễ Đính Hôn",
+            date: "10:00 - 15/11/2025",
+            location: "Nhà gái - TP. Huế",
+            description:
+                "Buổi lễ đính hôn được tổ chức trong không khí thân mật, ấm cúng cùng sự hiện diện của gia đình hai bên.",
+            image: "/engagement.jpg",
+        },
+        {
+            title: "Lễ Thành Hôn",
+            date: "08:00 - 30/11/2025",
+            location: "Nhà trai - TP. Hồ Chí Minh",
+            description:
+                "Khoảnh khắc thiêng liêng khi cô dâu và chú rể chính thức nên duyên vợ chồng, trước sự chứng kiến của người thân và bạn bè.",
+            image: "/wedding.jpg",
+        },
+        {
+            title: "Tiệc Cưới",
+            date: "18:00 - 30/11/2025",
+            location: "Trung tâm tiệc cưới White Palace, Q.Phú Nhuận",
+            description:
+                "Bữa tiệc tràn ngập niềm vui, âm nhạc và lời chúc phúc dành cho đôi uyên ương trong ngày trọng đại.",
+            image: "/party.jpg",
+        },
+    ];
 
-const weddingSchedule: Event[] = [
-    {
-        time: '10:00 AM',
-        title: 'LỄ THÀNH HÔN',
-        location: 'Nhà Thờ Lớn Hà Nội',
-        address: '40 P. Nhà Chung, Hàng Trống, Hoàn Kiếm, Hà Nội',
-        Icon: Church,
-    },
-    {
-        time: '06:00 PM',
-        title: 'TIỆC CƯỚI TẠI NHÀ HÀNG',
-        location: 'Khách Sạn Lotte Hà Nội',
-        address: '54 P. Liễu Giai, Cống Vị, Ba Đình, Hà Nội',
-        Icon: Martini,
-    },
-];
-
-// Màu Xanh Cyan: #03c0cc
-const themeColor = 'text-[#03c0cc]';
-const themeBg = 'bg-[#03c0cc]';
-const secondaryColor = 'text-[#e32b42]'; // Màu đỏ cho tiêu đề phụ
-
-const Schedule: React.FC = () => {
     return (
-        <section id="schedule" className="py-20 lg:py-32 bg-gray-50">
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <section
+            id="wedding-events"
+            className="relative overflow-hidden"
+            style={{
+                backgroundImage: `url('/layout/wedding-events.png')`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+            }}
+        >
+            {/* Biểu tượng bay quanh */}
+            <FloatingHearts count={35} icons={["💖", "💍", "🌸", "🕊️", "✨"]} />
 
-                {/* Tiêu đề Section */}
+            {/* Overlay nền nhẹ */}
+            <div className="absolute inset-0 bg-white/60 backdrop-blur-sm"></div>
 
-                <div className="text-center mb-16">
-                    <h2 className="test text-xl md:text-2xl text-center" >Lịch Trình</h2>
-                    <p className="text-xl text-gray-600">Đón chờ ngày hạnh phúc bên gia đình và bạn bè</p>
-                    <Heart1 />
+            <div className="relative z-10 py-30 px-6 md:px-12 text-center">
+                {/* Tiêu đề */}
+                <motion.h1
+                    initial={{ opacity: 0, y: -40 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 1 }}
+                    className="test text-5xl md:text-6xl font-bold mb-1 font-bold bg-gradient-to-r 
+                        from-pink-400 via-rose-400 to-amber-300 bg-clip-text text-transparent drop-shadow-lg"
+                >
+                    Lịch Trình Cưới
+                </motion.h1>
 
-                </div>
+                {/* Dòng mô tả */}
+                <motion.p
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    transition={{ delay: 0.3, duration: 1 }}
+                    className="text-gray-700 max-w-2xl mx-auto mb-12 text-lg italic"
+                >
+                    Cùng nhìn lại hành trình tình yêu được đánh dấu bằng những khoảnh khắc
+                    đáng nhớ trong ngày trọng đại của chúng tôi 💕
+                </motion.p>
 
-                {/* Lịch Trình (Grid 2 cột) */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                    {weddingSchedule.map((event, index) => (
-                        <div
+                {/* Danh sách sự kiện */}
+                <div className="grid md:grid-cols-3 gap-10 mt-10">
+                    {events.map((event, index) => (
+                        <motion.div
                             key={index}
-                            className="p-8 bg-white rounded-xl shadow-lg border-t-4 border-[#03c0cc] flex flex-col items-center text-center"
+                            initial={{ opacity: 0, y: 50 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: false, amount: 0.3 }}
+                            transition={{ duration: 1, delay: index * 0.2 }}
+                            className="bg-white/80 backdrop-blur-md border border-white/40 rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-500"
                         >
-                            <div className={`p-4 rounded-full ${themeBg} mb-4 shadow-md`}>
-                                <event.Icon className="w-8 h-8 text-white" />
+                            <div className="relative h-56 w-full overflow-hidden">
+                                <img
+                                    src={event.image}
+                                    alt={event.title}
+                                    className="object-cover w-full h-full transition-transform duration-700 hover:scale-110"
+                                />
                             </div>
 
-                            {/* Thời gian */}
-                            <h3 className={`text-3xl font-extrabold mb-3 ${themeColor}`}>{event.time}</h3>
-
-                            {/* Tiêu đề sự kiện */}
-                            <h4 className={`text-xl font-bold mb-4 ${secondaryColor}`}>{event.title}</h4>
-
-                            {/* Địa điểm */}
-                            <div className="text-gray-700">
-                                <p className="font-semibold">{event.location}</p>
-                                <div className="flex items-center justify-center mt-2 text-sm">
-                                    <MapPin className="w-4 h-4 mr-1 text-gray-500" />
-                                    <span>{event.address}</span>
-                                </div>
+                            <div className="p-6">
+                                <h2 className="text-2xl font-bold text-gray-800 mb-2">
+                                    {event.title}
+                                </h2>
+                                <p className="text-pink-600 font-medium mb-1">{event.date}</p>
+                                <p className="text-blue-600 italic mb-3">{event.location}</p>
+                                <p className="text-gray-700 text-sm leading-relaxed text-justify">
+                                    {event.description}
+                                </p>
                             </div>
-
-                            {/* Nút Xem Bản Đồ */}
-                            <a
-                                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(event.address)}`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className={`mt-6 inline-block py-2 px-6 rounded-full text-white font-medium transition-colors ${themeBg} hover:bg-opacity-80`}
-                            >
-                                Xem Bản Đồ
-                            </a>
-                        </div>
+                        </motion.div>
                     ))}
                 </div>
             </div>
@@ -90,4 +106,4 @@ const Schedule: React.FC = () => {
     );
 };
 
-export default Schedule;
+export default WeddingEventsPage;
