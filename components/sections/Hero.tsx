@@ -3,9 +3,14 @@ import { motion } from "framer-motion";
 import CountdownTimer from "@/components/CountdownTimer";
 import { Heart } from "../Heart";
 import FloatingHearts from "../FloatingIcons";
+import { useParams } from 'next/navigation';
 
 const Hero = () => {
+    const pa = useParams()
+    console.log(pa)
+    const accept = () => {
 
+    }
     return (
         <section
             id="/#"
@@ -92,7 +97,7 @@ const Hero = () => {
                         whileTap={{ scale: 0.95 }}
                         animate={{ opacity: [0.6, 1, 0.6, 1, 0.6] }}
                         transition={{ duration: 2, repeat: Infinity }}
-                        onClick={() => console.log("Xác nhận tham dự!")}
+                        onClick={accept}
                     >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"

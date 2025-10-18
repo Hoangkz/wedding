@@ -1,85 +1,61 @@
-// app/api/wishes/route.ts
-import { NextResponse } from 'next/server';
-import { AppDataSource } from '@/lib/data-source';
-import { Wish } from '@/lib/entities/Wish';
-import { Customer } from '@/lib/entities/Customer';
-import { number } from 'framer-motion';
+import { NextResponse, NextRequest } from 'next/server';
+import { prisma } from '@/lib/prisma';
+import { nanoid } from 'nanoid';
 
-const wishRepo = AppDataSource.getRepository(Wish);
-const customerRepo = AppDataSource.getRepository(Customer);
+export async function GET(req: NextRequest) {
+    try {
+        const wishes = await prisma.wish.findMany({
+            orderBy: { createdAt: 'desc' },
+        });
 
-// GET /api/wishes
-export async function GET() {
-    // Lấy tất cả wish, kèm customer nếu có
-    const wishes = await wishRepo.find({
-        relations: ['customer'],
-        order: { createdAt: 'DESC' },
-    });
-    return NextResponse.json(wishes);
+        return NextResponse.json({ wishes }, { status: 200 });
+
+    } catch {
+        console.error('Lỗi khi tải danh sách lời chúc:');
+        return NextResponse.json({
+            error: 'Không thể tải danh sách lời chúc.',
+        }, { status: 500 });
+    }
 }
 
-// POST /api/wishes
-export async function POST(req: Request) {
-    const { name, desc, customerId } = await req.json();
+export async function POST(req: NextRequest) {
+    try {
+        const body = await req.json();
+        const {
+            name,
+            desc,
+            customerId = null
+        } = body;
 
-    let customer: Customer | null;
-
-    const data: {
-        name: string,
-        desc: string,
-        customer?: Customer
-    } = {
-        name,
-        desc,
-    }
-
-    if (customerId) {
-        customer = await customerRepo.findOne({ where: { id: customerId } });
-        if (!customer) {
-            return NextResponse.json({ error: 'Customer not found' }, { status: 404 });
+        if (!name || !desc) {
+            return NextResponse.json({ error: 'Thiếu các trường bắt buộc (name, desc)!' }, { status: 400 });
         }
-        data.customer = customer
-    }
 
-    const wish = wishRepo.create(data);
-
-    await wishRepo.save(wish);
-    return NextResponse.json(wish);
-}
-
-// PUT /api/wishes
-export async function PUT(req: Request) {
-    const { id, name, desc, customerId } = await req.json();
-
-    const wish = await wishRepo.findOne({ where: { id }, relations: ['customer'] });
-    if (!wish) return NextResponse.json({ error: 'Wish not found' }, { status: 404 });
-
-    wish.name = name ?? wish.name;
-    wish.desc = desc ?? wish.desc;
-
-    if (customerId !== undefined) {
-        if (customerId === null) {
-            wish.customer = undefined; // remove customer
-        } else {
-            const customer = await customerRepo.findOne({ where: { id: customerId } });
-            if (!customer) return NextResponse.json({ error: 'Customer not found' }, { status: 404 });
-            wish.customer = customer;
+        if (customerId && typeof customerId === 'string' && customerId.trim() !== '') {
+            const customerExists = await prisma.customer.findUnique({ where: { id: customerId } });
+            if (!customerExists) {
+                return NextResponse.json({ error: 'Customer ID không tồn tại.' }, { status: 400 });
+            }
         }
+
+        const newWish = await prisma.wish.create({
+            data: {
+                id: nanoid(),
+                name,
+                desc,
+                customerId: customerId || null,
+            }
+        });
+
+        return NextResponse.json({
+            message: 'Tạo lời chúc thành công!',
+            wish: newWish
+        }, { status: 201 });
+
+    } catch {
+        console.error('Lỗi khi tạo lời chúc:');
+        return NextResponse.json({
+            error: 'Không thể tạo lời chúc!',
+        }, { status: 500 });
     }
-
-    await wishRepo.save(wish);
-    return NextResponse.json(wish);
-}
-
-// DELETE /api/wishes?id=123
-export async function DELETE(req: Request) {
-    const { searchParams } = new URL(req.url);
-    const id = Number(searchParams.get('id'));
-    if (!id) return NextResponse.json({ error: 'ID is required' }, { status: 400 });
-
-    const wish = await wishRepo.findOne({ where: { id } });
-    if (!wish) return NextResponse.json({ error: 'Wish not found' }, { status: 404 });
-
-    await wishRepo.remove(wish);
-    return NextResponse.json({ message: 'Wish deleted' });
 }

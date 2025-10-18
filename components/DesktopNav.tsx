@@ -1,16 +1,17 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Home, Users, HeartHandshake, Calendar, Image, MessageSquare, Gift, MailCheck } from 'lucide-react';
 
 interface NavItem {
     name: string;
-    href: string;
+    href: string; // Chứa hash tuyệt đối, ví dụ: '/#couple'
     Icon: React.ElementType;
 }
 
+// ⚠️ Đảm bảo các ID này khớp với ID của các section trong trang của bạn
 export const navItems: NavItem[] = [
     { name: 'Home', href: '/', Icon: Home },
     { name: 'Thư mời', href: '/#letter', Icon: MailCheck },
@@ -22,56 +23,95 @@ export const navItems: NavItem[] = [
     { name: 'Mừng cưới', href: '/#gifts', Icon: Gift },
 ];
 
-const DesktopNav: React.FC = () => {
+interface DesktopNavProps {
+    baseIdPath: string; // Ví dụ: '/111' hoặc ''
+}
+
+const DesktopNav: React.FC<DesktopNavProps> = ({ baseIdPath }) => {
     const pathname = usePathname();
-    // Khởi tạo currentHash từ window nếu có, hoặc để trống (tránh hydration mismatch)
     const [currentHash, setCurrentHash] = useState('');
     const [isMounted, setIsMounted] = useState(false);
 
+    // Kiểm tra xem chúng ta đang ở trang có thể dùng Hash Navigation (`/` hoặc `/[id]`)
+    const isHashPage = pathname === '/' || pathname.match(/^\/[^/]+$/);
+
+    // Lắng nghe Hash từ URL và sự kiện cuộn (Scroll Spy)
     useEffect(() => {
         setIsMounted(true);
-        if (typeof window !== 'undefined') {
-            setCurrentHash(window.location.hash);
+        if (!isHashPage || typeof window === 'undefined') return;
 
-            // Lắng nghe sự kiện hashchange để cập nhật active khi CUỘN
-            const handleHashChange = () => {
-                setCurrentHash(window.location.hash);
-            };
-            window.addEventListener('hashchange', handleHashChange);
-            return () => {
-                window.removeEventListener('hashchange', handleHashChange);
-            };
-        }
-    }, []);
+        // --- Thiết lập Hash ban đầu ---
+        const initialHash = window.location.hash;
+        setCurrentHash(initialHash);
 
-    // Hàm xử lý click: Cập nhật hash thủ công ngay lập tức
-    const handleLinkClick = (href: string) => {
-        if (href.startsWith('/#')) {
-            const hash = href.substring(1); // Lấy #couple
-            setCurrentHash(hash); // Cập nhật state hash ngay lập tức
-        } else if (href === '/') {
-            setCurrentHash(''); // Nếu click Home, đặt hash là rỗng
-        }
-        // Các link khác (không phải hash) sẽ tự động kích hoạt logic active qua usePathname
-    };
+        // --- Logic Scroll Spy (Cuộn trang) ---
+        const handleScroll = () => {
+            let activeHash = '';
+            let minDistance = Infinity;
+            const threshold = window.innerHeight * 0.33; // Mốc 1/3 màn hình
 
-    // Hàm kiểm tra mục menu active (sử dụng currentHash)
+            // Bỏ qua mục Home
+            navItems.slice(1).forEach(item => {
+                const id = item.href.substring(2); // '#letter' -> 'letter'
+                const element = document.getElementById(id);
+
+                if (element) {
+                    const rect = element.getBoundingClientRect();
+
+                    if (rect.top <= threshold && rect.bottom >= 0) {
+                        const distance = Math.abs(rect.top - threshold);
+                        if (distance < minDistance) {
+                            minDistance = distance;
+                            activeHash = '#' + id;
+                        }
+                    }
+                }
+            });
+
+            // Nếu không có section nào khớp, kiểm tra xem đã cuộn lên đỉnh chưa
+            if (!activeHash && window.scrollY < 100) {
+                activeHash = ''; // Về trang chủ
+            }
+
+            // Cập nhật state nếu hash thay đổi
+            if (activeHash !== currentHash) {
+                setCurrentHash(activeHash);
+            }
+        };
+
+        // Bổ sung lắng nghe sự kiện hashchange và scroll
+        const handleHashChange = () => {
+            // Đợi một chút để cuộn hoàn tất trước khi cập nhật hash
+            setTimeout(() => setCurrentHash(window.location.hash), 50);
+        };
+
+        window.addEventListener('hashchange', handleHashChange);
+        window.addEventListener('scroll', handleScroll, { passive: true });
+
+        // Cleanup
+        return () => {
+            window.removeEventListener('hashchange', handleHashChange);
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, [isHashPage, currentHash]);
+
+
+    // Hàm kiểm tra mục menu active
     const isActive = (href: string) => {
-        if (!isMounted) return false; // Tránh render sai khi Server Side Rendering
+        if (!isMounted) return false;
 
         // Link trang chủ (/)
         if (href === '/') {
-            return pathname === '/' && currentHash === '';
+            return isHashPage && (currentHash === '' || currentHash === '#');
         }
 
         // Các link neo (#)
         if (href.startsWith('/#')) {
             const hash = href.substring(1);
-            // So sánh hash đã được lưu trong state
-            return pathname === '/' && currentHash === hash;
+            return isHashPage && currentHash === hash;
         }
 
-        // Các link thông thường
+        // Các link khác
         return pathname === href;
     };
 
@@ -82,12 +122,15 @@ const DesktopNav: React.FC = () => {
                 const activeClasses = 'text-[#f0394d] font-bold';
                 const defaultClasses = 'text-gray-700 hover:text-[#f0394d]';
 
+                // TẠO ĐƯỜNG DẪN HREF HOÀN CHỈNH: /111/#couple hoặc /
+                const fullHref = item.href.startsWith('/#')
+                    ? baseIdPath + item.href // '/111' + '/#couple' -> '/111/#couple'
+                    : item.href === '/' ? baseIdPath || '/' : item.href;
+
                 return (
                     <li key={item.name} className="relative group">
                         <Link
-                            href={item.href}
-                            // Thêm sự kiện onClick
-                            onClick={() => handleLinkClick(item.href)}
+                            href={fullHref}
                             className={`flex flex-col items-center p-2 text-xs lg:text-sm font-medium transition-colors relative ${active ? activeClasses : defaultClasses
                                 }`}
                         >

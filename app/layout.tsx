@@ -1,7 +1,5 @@
-// app/layout.tsx
 import { ToastContainer } from 'react-toastify';
-import './globals.css'; // Global Tailwind CSS imports
-import Header from '@/components/Header'; // Điều chỉnh path nếu cần
+import './globals.css';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -10,10 +8,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link href="https://fonts.googleapis.com/css?family=Great+Vibes&display=swap" rel="stylesheet" />
       </head>
       <body>
-        <Header />
-        <main className="pt-16">
-          {children}
-        </main>
+        {children}
         <ToastContainer />
       </body>
     </html>

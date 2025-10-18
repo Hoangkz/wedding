@@ -1,58 +1,68 @@
-// app/api/customers/route.ts
-import { NextResponse } from 'next/server';
-import { AppDataSource } from '@/lib/data-source';
-import { Customer, CustomerType } from '@/lib/entities/Customer';
+import { NextResponse, NextRequest } from 'next/server';
+import { prisma } from '@/lib/prisma'; // Đường dẫn đến Prisma Client
+import { nanoid } from 'nanoid';
+import dayjs from 'dayjs';
 
-const customerRepo = AppDataSource.getRepository(Customer);
+export async function POST(req: NextRequest) {
+    try {
+        const body = await req.json();
+        const {
+            name,
+            type,
+            invitation,
+            invitedAt,
+            attended = false
+        } = body;
 
-export async function GET() {
-    const customers = await customerRepo.find({ order: { createdAt: 'DESC' } });
-    return NextResponse.json(customers);
+        // 1. Kiểm tra dữ liệu bắt buộc
+        if (!name || !type || !invitation || !invitedAt) {
+            return NextResponse.json({ error: 'Thiếu các trường bắt buộc (name, type, invitation, invitedAt).' }, { status: 400 });
+        }
+
+        // 2. Chuyển đổi ngày tháng
+        // Chuỗi 'datetime-local' cần được parse thành đối tượng Date
+        const invitedDate = new Date(invitedAt);
+        if (isNaN(invitedDate.getTime())) {
+            return NextResponse.json({ error: 'Định dạng ngày/giờ mời không hợp lệ.' }, { status: 400 });
+        }
+        const data = {
+            id: nanoid(),
+            name,
+            type,
+            invitation,
+            invitedAt: dayjs(invitedAt).toDate(),
+            attended,
+        }
+        // 3. Tạo mới trong DB
+        const newCustomer = await prisma.customer.create({
+            data: data
+        });
+
+        return NextResponse.json({
+            message: 'Tạo khách hàng thành công!',
+            customer: newCustomer
+        }, { status: 201 });
+
+    } catch {
+        return NextResponse.json({
+            error: 'Không thể tạo khách hàng!',
+        }, { status: 500 });
+    }
 }
 
-export async function POST(req: Request) {
-    const { name, invitation, invitedAt, attended, type } = await req.json();
+// Hàm xử lý GET (Lấy danh sách)
+export async function GET(req: NextRequest) {
 
-    const customer = customerRepo.create({
-        name,
-        invitation,
-        invitedAt: new Date(invitedAt),
-        attended: attended ?? false,
-        type: type === 'Bride' ? CustomerType.Bride : CustomerType.Groom,
-    });
+    try {
+        const customers = await prisma.customer.findMany({
+            orderBy: { invitedAt: 'asc' }, // Sắp xếp theo ngày mời
+        });
 
-    await customerRepo.save(customer);
-    return NextResponse.json(customer);
-}
+        return NextResponse.json({ customers }, { status: 200 });
 
-export async function PUT(req: Request) {
-    const { id, name, invitation, invitedAt, attended, type } = await req.json();
-
-    const customer = await customerRepo.findOne({ where: { id } });
-    if (!customer) return NextResponse.json({ error: 'Customer not found' }, { status: 404 });
-
-    customer.name = name ?? customer.name;
-    customer.invitation = invitation ?? customer.invitation;
-    customer.invitedAt = invitedAt ? new Date(invitedAt) : customer.invitedAt;
-    customer.attended = attended ?? customer.attended;
-    customer.type = type
-        ? type === 'Bride'
-            ? CustomerType.Bride
-            : CustomerType.Groom
-        : customer.type;
-
-    await customerRepo.save(customer);
-    return NextResponse.json(customer);
-}
-
-export async function DELETE(req: Request) {
-    const { searchParams } = new URL(req.url);
-    const id = searchParams.get('id');
-    if (!id) return NextResponse.json({ error: 'ID is required' }, { status: 400 });
-
-    const customer = await customerRepo.findOne({ where: { id } });
-    if (!customer) return NextResponse.json({ error: 'Customer not found' }, { status: 404 });
-
-    await customerRepo.remove(customer);
-    return NextResponse.json({ message: 'Customer deleted' });
+    } catch {
+        return NextResponse.json({
+            error: 'Không thể tải danh sách khách hàng.',
+        }, { status: 500 });
+    }
 }

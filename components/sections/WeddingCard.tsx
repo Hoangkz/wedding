@@ -7,8 +7,8 @@ const WeddingCard = () => {
     const weddingInfo = {
         invitationText: "TRÂN TRỌNG KÍNH MỜI",
         bodyText: "TỚI DỰ BỮA CƠM THÂN MẬT CHUNG VUI\nCÙNG CHÚNG TÔI MỪNG LỄ VU QUY",
-        groomName: "Vương Hồng",
-        brideName: "Ngọc Trung",
+        groomName: "Kiến Văn",
+        brideName: "Việt Hoài",
         eventTimeLarge: "16H00",
         eventDay: "THỨ BẢY",
         eventDate: "11",
