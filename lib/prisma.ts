@@ -1,5 +1,5 @@
 // lib/prisma.ts
 
-import { PrismaClient } from "@/prisma/generated";
+import { PrismaClient } from "@/prisma/generated"
 
-export const prisma = new PrismaClient();
+export const prisma = new PrismaClient()
