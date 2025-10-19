@@ -1,10 +1,9 @@
 "use client"
 
+import { AnimatePresence, motion, Variants } from "framer-motion"
 import { useState } from "react"
-import { motion, AnimatePresence, Variants } from "framer-motion"
 import FloatingHearts from "../FloatingIcons"
 
-// Icon components (giữ nguyên)
 const UserIcon = () => (
   <svg
     className="w-5 h-5 text-pink-400"
@@ -75,7 +74,7 @@ const getMockTime = () => {
 
 const WeddingWishes = () => {
   const initialWishes: Wish[] = [
-    // Thêm nhiều mẫu hơn để test cuộn
+
     {
       id: 1,
       name: "Gia đình Cô Ba",
@@ -107,7 +106,7 @@ const WeddingWishes = () => {
       message: "Chúc hai con có một cuộc sống hôn nhân ngọt ngào và bền chặt.",
       timestamp: "01/01 10:10",
     },
-    // Thêm nữa
+
     {
       id: 6,
       name: "Bác Tư",
@@ -138,7 +137,6 @@ const WeddingWishes = () => {
     setIsSubmitting(true)
     setSubmitError(null)
 
-    // --- MÔ PHỎNG GỌI API ---
     await new Promise((resolve) => setTimeout(resolve, 500))
 
     try {
@@ -159,7 +157,6 @@ const WeddingWishes = () => {
     }
   }
 
-  // Biến thể cho hiệu ứng Framer Motion (giữ nguyên)
   const itemVariants: Variants = {
     hidden: { opacity: 0, y: 20, scale: 0.95 },
     visible: {
@@ -274,11 +271,10 @@ const WeddingWishes = () => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className={`w-full text-white font-bold text-base py-2.5 rounded-full shadow-lg transition duration-300 transform flex items-center justify-center ${
-                isSubmitting
+              className={`w-full text-white font-bold text-base py-2.5 rounded-full shadow-lg transition duration-300 transform flex items-center justify-center ${isSubmitting
                   ? "bg-gray-400 cursor-not-allowed"
                   : "bg-gradient-to-r from-rose-500 to-pink-600 hover:shadow-pink-400/50 hover:scale-[1.02]"
-              }`}
+                }`}
             >
               {isSubmitting ? (
                 <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>

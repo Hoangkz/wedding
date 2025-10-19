@@ -1,11 +1,9 @@
 "use client"
 
-import { motion } from "framer-motion"
-import FloatingHearts from "../FloatingIcons" // Giữ nguyên component hiệu ứng
 import { weddingInfo } from "@/lib/values"
+import { motion } from "framer-motion"
 import Image from "next/image"
-
-// Dữ liệu mô phỏng QR và thông tin chuyển khoản (Giữ nguyên)
+import FloatingHearts from "../FloatingIcons"
 
 const QrCard = ({ data, delay }: { data: typeof weddingInfo.groom; delay: number }) => {
   return (
@@ -13,17 +11,15 @@ const QrCard = ({ data, delay }: { data: typeof weddingInfo.groom; delay: number
       initial={{ opacity: 0, scale: 0.8 }}
       whileInView={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.2, delay: delay, type: "spring", stiffness: 80 }}
-      // THAY ĐỔI QUAN TRỌNG: Đặt max-width cụ thể là 300px trên màn hình lớn
       className="w-full max-w-[300] w-[80%] p-5 bg-white/95 rounded-3xl shadow-2xl border-t-8 border-pink-500 backdrop-blur-sm transition duration-500 hover:shadow-pink-400/50 hover:scale-[1.01]"
     >
-      {/* Tiêu đề nhà */}
+
       <h3
         className={`text-2xl font-['Playfair_Display'] font-bold mb-3 ${data.title === "Nhà Trai" ? "text-indigo-600" : "text-rose-600"}`}
       >
         {data.title}
       </h3>
 
-      {/* Mã QR */}
       <div className="relative w-full aspect-square bg-gray-100 rounded-xl overflow-hidden mb-3 border-4 border-white shadow-inner group">
         <Image
           width={64}
@@ -37,7 +33,6 @@ const QrCard = ({ data, delay }: { data: typeof weddingInfo.groom; delay: number
         </div>
       </div>
 
-      {/* Thông tin chuyển khoản */}
       <div className="text-left space-y-1 border-t border-gray-200 pt-3">
         <p className="text-lg font-semibold text-gray-800">{data.name}</p>
         <p className="text-gray-600 text-sm">
@@ -48,7 +43,6 @@ const QrCard = ({ data, delay }: { data: typeof weddingInfo.groom; delay: number
         </p>
       </div>
 
-      {/* Lời cảm ơn nhỏ */}
       <p className="text-center text-sm text-gray-500 italic mt-4 border-t pt-3 border-dotted">
         {data.note}
       </p>
@@ -67,14 +61,13 @@ const WeddingGift = () => {
         backgroundPosition: "center",
       }}
     >
-      {/* Biểu tượng bay quanh */}
+
       <FloatingHearts count={30} icons={["💰", "🎁", "💖", "✨"]} />
 
-      {/* Overlay nền nhẹ */}
       <div className="absolute inset-0 bg-white/60 backdrop-blur-sm"></div>
 
       <div className="relative z-10 py-30 px-6 md:px-12 text-center">
-        {/* Tiêu đề chính - Đã sửa lỗi lồng thẻ và tối ưu hóa CSS */}
+
         <motion.h1
           initial={{ opacity: 0, y: -40 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -93,16 +86,13 @@ const WeddingGift = () => {
           Sự hiện diện của Quý vị là món quà quý giá nhất!
         </motion.p>
 
-        {/* Khu vực 2 Thẻ QR */}
         <div className="flex flex-wrap gap-10 justify-center items-center mb-4 ">
-          {/* Thẻ QR Nhà Trai */}
+
           <QrCard data={weddingInfo.groom} delay={0.3} />
 
-          {/* Thẻ QR Nhà Gái */}
           <QrCard data={weddingInfo.bride} delay={0.4} />
         </div>
 
-        {/* Ghi chú chung */}
         <motion.p
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}

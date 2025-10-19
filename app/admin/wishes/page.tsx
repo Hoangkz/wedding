@@ -1,21 +1,19 @@
 "use client"
 
-import { useState, useEffect, useMemo } from "react"
-import { toast } from "react-toastify"
-import dayjs from "dayjs"
-import { FilePenLine, Trash, PlusCircle, X } from "lucide-react"
 import { appWeddingClient } from "@/lib/ApiClient"
-import { Button, Input, Pagination, Table, TextArea } from "../users/page" // Thay thế bằng đường dẫn thực tế
+import dayjs from "dayjs"
+import { FilePenLine, PlusCircle, Trash, X } from "lucide-react"
+import { useEffect, useMemo, useState } from "react"
+import { toast } from "react-toastify"
+import { Button, Input, Pagination, Table, TextArea } from "../users/page"
 
-// Định nghĩa kiểu dữ liệu
 interface Wish {
   id: string
   name: string
-  desc: string // Nội dung lời chúc
+  desc: string
   customerId: string | null
   createdAt: string
   updatedAt: string
-  // Có thể thêm customerName nếu API trả về join data
   customerName?: string | null
 }
 
@@ -29,10 +27,6 @@ const formatDateTime = (date: string): string => {
   return dayjs(date).format("DD/MM/YYYY HH:mm")
 }
 
-// =========================================================================
-// WISH MANAGEMENT COMPONENT
-// =========================================================================
-
 export default function WishManagementPage() {
   const [wishes, setWishes] = useState<Wish[]>([])
   const [loading, setLoading] = useState(true)
@@ -43,11 +37,10 @@ export default function WishManagementPage() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [editingWish, setEditingWish] = useState<Partial<Wish> | null>(null)
 
-  // --- Logic Fetch Data ---
   const fetchWishes = async () => {
     setLoading(true)
     try {
-      // Giả định API GET /api/wishes trả về danh sách lời chúc
+
       const response = await appWeddingClient.getWishes()
       setWishes(response.data.wishes || [])
     } catch {
@@ -61,7 +54,6 @@ export default function WishManagementPage() {
     fetchWishes()
   }, [])
 
-  // --- Logic CRUD ---
   const handleEditClick = (wish: Wish) => {
     setEditingWish(wish)
     setIsModalOpen(true)
@@ -86,7 +78,6 @@ export default function WishManagementPage() {
       return
     }
 
-    // Chuẩn hóa customerId (rỗng -> null)
     const payload = {
       ...editingWish,
       customerId: editingWish.customerId || null,
@@ -94,11 +85,11 @@ export default function WishManagementPage() {
 
     try {
       if (editingWish.id) {
-        // SỬA
+
         await appWeddingClient.updateWish(editingWish.id, payload)
         toast.success("Cập nhật lời chúc thành công!")
       } else {
-        // THÊM MỚI
+
         await appWeddingClient.createWish(payload)
         toast.success("Thêm lời chúc thành công!")
       }
@@ -122,7 +113,6 @@ export default function WishManagementPage() {
     }
   }
 
-  // --- Lọc & Phân trang ---
   const filteredWishes = useMemo(() => {
     return wishes.filter(
       (wish) =>
@@ -137,10 +127,6 @@ export default function WishManagementPage() {
   }, [filteredWishes, currentPage, itemsPerPage])
 
   const totalPages = Math.ceil(filteredWishes.length / itemsPerPage)
-
-  // =========================================================================
-  // RENDER UI CHÍNH
-  // =========================================================================
 
   return (
     <div>
@@ -222,10 +208,6 @@ export default function WishManagementPage() {
     </div>
   )
 }
-
-// -------------------------------------------------------------------------
-// WISH MODAL COMPONENT
-// -------------------------------------------------------------------------
 
 const WishModal = ({ isOpen, onClose, wish, onChange, onSave }: any) => {
   if (!isOpen || !wish) return null

@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
-import bcrypt from "bcrypt"
 import { Context } from "@/lib/server-utils"
+import bcrypt from "bcrypt"
+import { NextRequest, NextResponse } from "next/server"
 
 export async function PUT(req: NextRequest, { params }: Context) {
   try {
@@ -15,13 +15,10 @@ export async function PUT(req: NextRequest, { params }: Context) {
     if (!user) {
       return NextResponse.json({ error: "User không tồn tại" }, { status: 404 })
     }
-    // Kiểm tra mật khẩu cũ
     const isMatch = await bcrypt.compare(currentPassword, user.password)
     if (!isMatch) {
       return NextResponse.json({ error: "Mật khẩu cũ không đúng" }, { status: 400 })
     }
-
-    // Hash mật khẩu mới
     const hashed = await bcrypt.hash(newPassword, 10)
     await prisma.user.update({
       where: { id: userId },

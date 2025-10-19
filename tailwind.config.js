@@ -7,18 +7,14 @@ module.exports = {
   ],
   theme: {
     extend: {
-      // Tùy chỉnh font chữ cho cảm giác lãng mạn
       fontFamily: {
-        // Sử dụng font serif thanh lịch
-        serif: ["Playfair Display", "serif"],
-        // Sử dụng font script hoặc cursive cho tiêu đề
-        script: ["Great Vibes", "cursive"],
+          serif: ["Playfair Display", "serif"],
+          script: ["Great Vibes", "cursive"],
       },
-      // Tùy chỉnh màu sắc tiệc cưới
       colors: {
-        "blush-pink": "#FFC0CB", // Hồng nhạt
-        ivory: "#FFFFF0", // Trắng ngà
-        gold: "#FFD700", // Vàng kim
+        "blush-pink": "#FFC0CB", 
+        ivory: "#FFFFF0", 
+        gold: "#FFD700", 
       },
     },
   },

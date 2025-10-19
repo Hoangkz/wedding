@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 
 type FloatingHeartsProps = {
   count: number
-  icons?: string[] // <-- hỗ trợ mảng icon
+  icons?: string[]
 }
 
 const FloatingHearts = ({ count, icons }: FloatingHeartsProps) => {
@@ -30,7 +30,7 @@ const FloatingHearts = ({ count, icons }: FloatingHeartsProps) => {
       delay: Math.random() * 3,
       duration: Math.random() * 5 + 3,
       offsetX: Math.random() * 30 - 15,
-      icon: availableIcons[Math.floor(Math.random() * availableIcons.length)], // random icon
+      icon: availableIcons[Math.floor(Math.random() * availableIcons.length)],
     }))
 
     setHearts(newHearts)

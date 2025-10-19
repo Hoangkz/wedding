@@ -1,18 +1,15 @@
-// context/sidebar-context.tsx
+
 "use client"
 
-import { createContext, useContext, useState, ReactNode } from "react"
+import { createContext, ReactNode, useContext, useState } from "react"
 
-// 1. Định nghĩa Context Type
 interface SidebarContextType {
   isCollapsed: boolean
   toggleCollapse: () => void
 }
 
-// 2. Tạo Context
 const SidebarContext = createContext<SidebarContextType | undefined>(undefined)
 
-// 3. Custom Hook để sử dụng Context
 export function useSidebarContext() {
   const context = useContext(SidebarContext)
   if (context === undefined) {
@@ -21,13 +18,12 @@ export function useSidebarContext() {
   return context
 }
 
-// 4. Provider Component
 interface SidebarProviderProps {
   children: ReactNode
 }
 
 export function SidebarProvider({ children }: SidebarProviderProps) {
-  // Ban đầu sidebar có thể mở (false) hoặc thu gọn (true)
+
   const [isCollapsed, setIsCollapsed] = useState(false)
 
   const toggleCollapse = () => {

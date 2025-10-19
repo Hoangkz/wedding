@@ -1,11 +1,11 @@
-// components/sections/Story.tsx
+
 "use client"
-import React from "react"
-import { Heart, Flower2, AArrowDown, Home, Quote } from "lucide-react"
-import { Heart1, Heart2 } from "../Heart"
-import Image from "next/image"
 import { motion } from "framer-motion"
+import { AArrowDown, Flower2, Heart, Home, Quote } from "lucide-react"
+import Image from "next/image"
+import React from "react"
 import FloatingHearts from "../FloatingIcons"
+import { Heart1, Heart2 } from "../Heart"
 
 interface StoryEvent {
   year: number
@@ -68,7 +68,7 @@ const Story: React.FC = () => {
       <FloatingHearts count={40} icons={["💕", "❤️", "🌸"]} />
       <div className="py-30 bg-white" style={{ backgroundColor: "rgba(255, 255, 255, 0.6)" }}>
         <div className="mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Tiêu đề Section */}
+
           <motion.div
             className="text-center mb-4"
             initial={{ opacity: 0, scale: 0.9, y: 40 }}
@@ -77,9 +77,9 @@ const Story: React.FC = () => {
               duration: 0.8,
               ease: "easeOut",
             }}
-            viewport={{ once: false, amount: 0.4 }} // 👈 chạy lại mỗi lần scroll đến
+            viewport={{ once: false, amount: 0.4 }}
           >
-            {/* Tiêu đề */}
+
             <motion.div
               className="flex justify-center items-center"
               initial={{ opacity: 0, y: -20 }}
@@ -96,7 +96,6 @@ const Story: React.FC = () => {
               </h1>
             </motion.div>
 
-            {/* Tim giữa */}
             <motion.div
               initial={{ scale: 0.8, opacity: 0 }}
               whileInView={{
@@ -108,7 +107,6 @@ const Story: React.FC = () => {
               <Heart1 />
             </motion.div>
 
-            {/* Ảnh vector bên dưới */}
             <motion.div
               style={{
                 width: "100",
@@ -124,7 +122,6 @@ const Story: React.FC = () => {
             </motion.div>
           </motion.div>
 
-          {/* Timeline */}
           <div className="relative max-w-4xl mx-auto">
             <div
               className="
@@ -142,36 +139,33 @@ const Story: React.FC = () => {
                 initial={{ opacity: 0, y: 60 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.1 }}
-                viewport={{ amount: 0.4, once: false }} // 👈 chạy lại mỗi lần scroll tới
+                viewport={{ amount: 0.4, once: false }}
               >
                 <div
                   className={`mb-8 flex justify-end md:justify-between items-center w-full 
-                                    ${
-                                      event.alignment === "right"
-                                        ? "md:flex-row-reverse"
-                                        : "md:flex-row"
-                                    }`}
+                                    ${event.alignment === "right"
+                      ? "md:flex-row-reverse"
+                      : "md:flex-row"
+                    }`}
                 >
-                  {/* Nội dung */}
+
                   <div className="w-full md:w-5/12 relative" style={{ maxWidth: "80%" }}>
-                    {/* Mũi tên giữ nguyên */}
+
                     <div
                       className={`
                                                 absolute top-5 h-0 w-0 border-solid border-transparent
                                                 border-t-[16px] border-b-[16px]
                                                 border-r-[18px] border-r-white left-[-16px]
-                                                ${
-                                                  event.alignment === "right"
-                                                    ? "md:border-r-[18px] md:border-r-white md:left-[-16px] md:border-l-0 md:right-auto"
-                                                    : "md:border-l-[18px] md:border-l-white md:right-[-16px] md:border-r-0 md:left-auto"
-                                                }
+                                                ${event.alignment === "right"
+                          ? "md:border-r-[18px] md:border-r-white md:left-[-16px] md:border-l-0 md:right-auto"
+                          : "md:border-l-[18px] md:border-l-white md:right-[-16px] md:border-r-0 md:left-auto"
+                        }
                                             `}
                     ></div>
 
                     <div
-                      className={`p-4 rounded-lg shadow-lg ${
-                        event.alignment === "right" ? "md:text-right" : "md:text-left"
-                      } bg-gray-50 hover:shadow-xl transition-shadow duration-300`}
+                      className={`p-4 rounded-lg shadow-lg ${event.alignment === "right" ? "md:text-right" : "md:text-left"
+                        } bg-gray-50 hover:shadow-xl transition-shadow duration-300`}
                     >
                       <h3
                         style={{
@@ -186,7 +180,6 @@ const Story: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* Icon */}
                   <div className="hidden md:flex flex-col items-center w-2/12">
                     <div
                       className={`w-8 h-8 rounded-full ${themeBg} flex items-center justify-center shadow-lg`}
@@ -196,7 +189,6 @@ const Story: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Heart giữ nguyên */}
                 <div className="hidden md:block w-full absolute top-0">
                   <div
                     className={`hidden md:block py-1 px-3 rounded-full text-white text-lg font-bold`}
@@ -213,13 +205,12 @@ const Story: React.FC = () => {
             ))}
           </div>
 
-          {/* Quote cuối */}
           <motion.div
             className="mt-16 text-center max-w-2xl mx-auto"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            viewport={{ once: false }} // 👈 cũng lặp lại khi scroll
+            viewport={{ once: false }}
           >
             <Quote className={`w-10 h-10 mx-auto mb-4 ${themeColor}`} />
             <p className="text-2xl italic text-gray-800">

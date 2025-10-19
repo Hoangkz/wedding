@@ -1,7 +1,7 @@
 "use client"
 
 import { appWeddingClient } from "@/lib/ApiClient";
-import { motion, Variants } from "framer-motion"; // BẮT BUỘC: Import type Variants
+import { motion, Variants } from "framer-motion";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
@@ -24,7 +24,7 @@ const WeddingCard = () => {
     googleMapsLink: "",
   })
   const { id } = useParams()
-  const loadData =useCallback( async () => {
+  const loadData = useCallback(async () => {
     if (!id) {
       return
     }
@@ -35,14 +35,14 @@ const WeddingCard = () => {
     } catch {
       toast.warning("Không tìm thấy người dùng. Vui lòng truy cập bằng đường dẫn thiệp mời đầy đủ!")
     }
-  },[id])
+  }, [id])
   useEffect(() => {
     loadData()
-  }, [id,loadData])
+  }, [id, loadData])
 
   const fadeIn: Variants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.42, 0, 0.58, 1] } }, // [0.42, 0, 0.58, 1] là giá trị phổ biến cho ease-out
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.42, 0, 0.58, 1] } },
   }
 
   const scaleIn: Variants = {

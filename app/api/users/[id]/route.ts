@@ -72,7 +72,6 @@ export async function DELETE(req: NextRequest, { params }: Context) {
     if (!token) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
-    // decode token
     const secret = process.env.JWT_SECRET
     if (!secret) {
       throw new Error("JWT_SECRET not defined")

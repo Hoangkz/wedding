@@ -4,7 +4,6 @@ import { AppSidebar } from "@/components/app-sidebar"
 import { Breadcrumb, BreadcrumbItem, BreadcrumbList } from "@/components/ui/breadcrumb"
 import { Separator } from "@/components/ui/separator"
 import { SidebarTrigger } from "@/components/ui/sidebar"
-// Loại bỏ import SidebarInset nếu bạn không dùng nó
 import { useAdminContext } from "@/hooks/admin.context"
 import { usePathname } from "next/navigation"
 

@@ -1,7 +1,7 @@
 "use client"
-import React from "react"
-import Image from "next/image"
 import { motion } from "framer-motion"
+import Image from "next/image"
+import React from "react"
 
 type CoupleIntroCardProps = {
   type: string
@@ -28,24 +28,23 @@ const CoupleIntroCard: React.FC<CoupleIntroCardProps> = ({
     <motion.div
       initial={{ opacity: 0, y: 100 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: false, amount: 0.1 }} // chạy lại mỗi lần scroll đến
+      viewport={{ once: false, amount: 0.1 }}
       transition={{ duration: 1.2, ease: "easeOut" }}
       className={`m-0 relative w-full max-w-sm md:max-w-md lg:w-1/2 p-6 rounded-3xl shadow-2xl backdrop-blur-md bg-white/10 border border-white/30`}
     >
-      {/* Viền ánh kim */}
+
       <div
         className={`absolute inset-0 rounded-3xl bg-gradient-to-br ${accentColor} opacity-30 blur-xl`}
       ></div>
 
       <div className="relative z-10 text-center text-gray-800">
-        {/* Tiêu đề */}
+
         <h2
           className={`text-lg md:text-xl font-semibold tracking-widest uppercase mb-4 text-transparent bg-clip-text bg-gradient-to-r ${accentColor}`}
         >
           {title}
         </h2>
 
-        {/* Khung Ảnh */}
         <motion.div
           initial={{ scale: 0.8, opacity: 0 }}
           whileInView={{ scale: 1, opacity: 1 }}
@@ -63,7 +62,6 @@ const CoupleIntroCard: React.FC<CoupleIntroCardProps> = ({
           <div className="absolute inset-0 rounded-full ring-2 ring-white/70 ring-offset-4 ring-offset-transparent"></div>
         </motion.div>
 
-        {/* Tên chính */}
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -75,7 +73,6 @@ const CoupleIntroCard: React.FC<CoupleIntroCardProps> = ({
           {name}
         </motion.h1>
 
-        {/* Tên phụ huynh */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -91,20 +88,17 @@ const CoupleIntroCard: React.FC<CoupleIntroCardProps> = ({
           </p>
         </motion.div>
 
-        {/* Tiểu sử */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: false, amount: 0.3 }}
           transition={{ delay: 0.4, duration: 1 }}
-          className={`text-base font-light leading-relaxed text-justify px-2 md:px-6 ${
-            isBride ? "text-rose-700" : "text-blue-700"
-          }`}
+          className={`text-base font-light leading-relaxed text-justify px-2 md:px-6 ${isBride ? "text-rose-700" : "text-blue-700"
+            }`}
         >
           {bio}
         </motion.div>
 
-        {/* Decorative bottom border */}
         <motion.div
           initial={{ scaleX: 0 }}
           whileInView={{ scaleX: 1 }}

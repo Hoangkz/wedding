@@ -1,5 +1,5 @@
 "use client"
-// Đã khôi phục đường dẫn tuyệt đối và sẽ đánh dấu chúng là external
+
 import AppLayout from "@/components/sidebar/AppLayout"
 import { SidebarProvider } from "@/components/ui/sidebar"
 import { AdminUser, AdminUserContext, navAdmin } from "@/hooks/admin.context"
@@ -21,7 +21,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         setShowModal(false)
       })
       .catch(() => {
-        // Xóa token nếu không đăng nhập được
+
         document.cookie = "token=; path=/; max-age=0"
         setShowModal(true)
       })
@@ -40,7 +40,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       const response = await appWeddingClient.login(userName, password)
       const { token, user: loggedUser }: any = response?.data
 
-      document.cookie = `token=${token}; path=/; max-age=${60 * 60 * 24}` // 1 ngày
+      document.cookie = `token=${token}; path=/; max-age=${60 * 60 * 24}`
 
       setUser(loggedUser)
       setShowModal(false)

@@ -1,14 +1,13 @@
 import { LucideProps } from "lucide-react"
 import { createContext, ForwardRefExoticComponent, RefAttributes, useContext } from "react"
 
-// Giả sử bạn có interface User giống với Prisma model
 export interface User {
   id: string
   userName: string
   password: string
   shortName?: string
   name?: string
-  dob?: string // hoặc Date
+  dob?: string
   phone?: string
   qrCodeUrl?: string
   address?: string
@@ -21,13 +20,12 @@ export interface User {
   bank?: string
   type?: string | null
   account?: string
-  weddingDate?: string // hoặc Date
+  weddingDate?: string
   weddingTime?: string
-  createdAt: string // hoặc Date
-  updatedAt: string // hoặc Date
+  createdAt: string
+  updatedAt: string
 }
 
-// AdminUser sẽ là User trừ password
 export type AdminUser = Omit<User, "password"> | null
 
 export interface navAdmin {

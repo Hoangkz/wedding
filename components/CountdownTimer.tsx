@@ -1,5 +1,5 @@
 "use client"
-import React, { useState, useEffect } from "react"
+import { useEffect, useState } from "react"
 
 const TARGET_DATE = new Date("2025-11-21T10:00:00").getTime()
 
@@ -35,7 +35,6 @@ const CountdownTimer = () => {
     isOver: false,
   })
 
-  // Đánh dấu đã render trên client
   useEffect(() => {
     setIsClient(true)
   }, [])
@@ -51,7 +50,6 @@ const CountdownTimer = () => {
   }, [isClient])
 
   if (!isClient) {
-    // Tránh mismatch — chỉ render khung trống trước khi client mount
     return (
       <div className="flex justify-center space-x-2 sm:space-x-4 md:space-x-8 mt-6 opacity-0">
         {Array.from({ length: 4 }).map((_, index) => (

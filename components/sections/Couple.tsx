@@ -6,7 +6,6 @@ import FloatingHearts from "../FloatingIcons"
 import { Heart1 } from "../Heart"
 
 const IntroPage = () => {
-  // --- Dữ liệu Cô Dâu ---
   const brideData = {
     type: "bride",
     name: "Ngô Việt Hoài",
@@ -16,7 +15,6 @@ const IntroPage = () => {
     bio: "Cô gái đến từ Xứ Huế mộng mơ, hiện đang sinh sống và làm việc tại Sài Gòn. Sau khi tốt nghiệp Học viện Báo chí và Tuyên truyền, quyết tâm theo đuổi đam mê làm phóng viên du lịch. Là người hay cười nhưng lại sống nội tâm, thích đọc sách, trồng cây và yêu thiên nhiên. Ngoài ra còn rất thích về với vôi, nuôi mèo và nuôi ước mơ cho cô một vườn trong khỏe sắc.",
   }
 
-  // --- Dữ liệu Chú Rể ---
   const groomData = {
     type: "groom",
     name: "Hoàng Kiến Văn",

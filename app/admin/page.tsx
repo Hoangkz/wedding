@@ -8,9 +8,6 @@ import Image from "next/image"
 import { useEffect, useState } from "react"
 import { toast } from "react-toastify"
 import { Select } from "./users/page"
-// Lưu ý: Giả định Input và TextArea đã được định nghĩa ở cuối file này hoặc đã import.
-
-// Component DashboardPage
 
 const CUSTOMER_TYPES = [
   { value: "Groom", label: "Chú rể" },
@@ -438,7 +435,6 @@ export default function DashboardPage() {
   )
 }
 
-// Giữ nguyên định nghĩa Input và TextArea
 const baseInputClass =
   "w-full border border-gray-300 p-2 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-150 text-sm shadow-inner"
 

@@ -1,6 +1,6 @@
-import { NextResponse, NextRequest } from "next/server"
 import { prisma } from "@/lib/prisma"
 import { Context } from "@/lib/server-utils"
+import { NextRequest, NextResponse } from "next/server"
 
 export async function PUT(req: NextRequest, context: Context) {
   const { id } = await context.params
@@ -11,13 +11,12 @@ export async function PUT(req: NextRequest, context: Context) {
       name,
       type,
       invitation,
-      invitedAt, // Chuỗi datetime-local
+      invitedAt, 
       attended,
     } = body
 
     const updateData: any = { name, type, invitation }
-
-    // Xử lý trường invitedAt (chỉ cập nhật nếu nó tồn tại)
+    
     if (invitedAt) {
       const invitedDate = new Date(invitedAt)
       if (isNaN(invitedDate.getTime())) {
@@ -25,19 +24,16 @@ export async function PUT(req: NextRequest, context: Context) {
       }
       updateData.invitedAt = invitedDate
     }
-
-    // Xử lý trường attended (chỉ cập nhật nếu nó tồn tại)
+    
     if (typeof attended === "boolean") {
       updateData.attended = attended
     }
-
-    // 1. Kiểm tra tồn tại
+    
     const existingCustomer = await prisma.customer.findUnique({ where: { id } })
     if (!existingCustomer) {
       return NextResponse.json({ error: "Không tìm thấy khách hàng để cập nhật." }, { status: 404 })
     }
-
-    // 2. Cập nhật trong DB
+    
     const updatedCustomer = await prisma.customer.update({
       where: { id },
       data: updateData,
@@ -64,13 +60,12 @@ export async function DELETE(req: NextRequest, { params }: Context) {
   const { id } = await params
 
   try {
-    // 1. Kiểm tra tồn tại
+    
     const existingCustomer = await prisma.customer.findUnique({ where: { id } })
     if (!existingCustomer) {
       return NextResponse.json({ error: "Không tìm thấy khách hàng để xóa." }, { status: 404 })
     }
-
-    // 2. Xóa khỏi DB
+    
     await prisma.customer.delete({
       where: { id },
     })
