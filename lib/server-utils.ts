@@ -23,13 +23,12 @@ export async function saveBase64ImageAndGetUrl(
 
   await fs.mkdir(targetDir, { recursive: true })
   await fs.writeFile(fullPath, buffer)
-
   return `/${normalizedRelativePath}`
 }
 
 const ALPHABET_ALPHANUMERIC = "0123456789abcdeuvwxyz"
-export const generateId = (length: number = 6): string => {
-  const nanoid = customAlphabet(ALPHABET_ALPHANUMERIC, length)
+export const generateId = (length: number = 6, has: string = ALPHABET_ALPHANUMERIC): string => {
+  const nanoid = customAlphabet((has || ALPHABET_ALPHANUMERIC), length)
   return nanoid()
 }
 

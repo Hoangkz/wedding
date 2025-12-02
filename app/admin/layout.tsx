@@ -2,9 +2,9 @@
 
 import AppLayout from "@/components/sidebar/AppLayout"
 import { SidebarProvider } from "@/components/ui/sidebar"
-import { AdminUser, AdminUserContext, navAdmin } from "@/hooks/admin.context"
+import { AdminUser, AdminUserContext, navAdmin } from "@/context/admin.context"
 import { appWeddingClient } from "@/lib/ApiClient"
-import { BookOpenCheck, Mails, Package, User } from "lucide-react"
+import { BookOpenCheck, CalendarCheck, FileImage, Mails, Package, SquareChartGantt, User } from "lucide-react"
 import { useEffect, useState } from "react"
 import { toast } from "react-toastify"
 
@@ -56,6 +56,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     { name: "Quản lý tài khoản", url: "/admin/users", icon: Package },
     { name: "Quản lý thư mời", url: "/admin/customers", icon: Mails },
     { name: "Quản lý lời chúc", url: "/admin/wishes", icon: BookOpenCheck },
+    { name: "Quản lý tập tin", url: "/admin/media", icon: FileImage },
+    { name: "Quản lý dòng thời gian", url: "/admin/timeline", icon: SquareChartGantt },
+    { name: "Quản lý lịch trình", url: "/admin/schedule", icon: CalendarCheck },
   ]
   return (
     <SidebarProvider>
@@ -81,7 +84,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 />
                 <button
                   type="submit"
-                  className="bg-blue-600 text-white p-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors duration-200"
+                  className="cursor-pointer bg-blue-600 text-white p-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors duration-200"
                 >
                   Login
                 </button>

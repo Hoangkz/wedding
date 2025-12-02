@@ -1,11 +1,8 @@
 "use client"
-
-import { weddingInfo } from "@/lib/values"
 import { motion } from "framer-motion"
-import Image from "next/image"
 import FloatingHearts from "../FloatingIcons"
 
-const QrCard = ({ data, delay }: { data: typeof weddingInfo.groom; delay: number }) => {
+const QrCard = ({ data = {}, delay = 0 }: { data: any, delay: number }) => {
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.8 }}
@@ -15,17 +12,15 @@ const QrCard = ({ data, delay }: { data: typeof weddingInfo.groom; delay: number
     >
 
       <h3
-        className={`text-2xl font-['Playfair_Display'] font-bold mb-3 ${data.title === "Nhà Trai" ? "text-indigo-600" : "text-rose-600"}`}
+        className={`text-2xl font-['Playfair_Display'] font-bold mb-3 ${data?.title === "Nhà Trai" ? "text-indigo-600" : "text-rose-600"}`}
       >
-        {data.title}
+        {data?.title}
       </h3>
 
       <div className="relative w-full aspect-square bg-gray-100 rounded-xl overflow-hidden mb-3 border-4 border-white shadow-inner group">
-        <Image
-          width={64}
-          height={64}
-          src={data.qrCodeUrl}
-          alt={`QR Code ${data.title}`}
+        <img
+          src={data?.qrCodeUrl}
+          alt={`QR Code ${data?.title}`}
           className="w-full h-full object-cover p-2 transform group-hover:scale-[1.03] transition duration-500"
         />
         <div className="absolute inset-0 bg-black/5 flex items-center justify-center text-white font-bold opacity-0 group-hover:opacity-100 transition duration-300">
@@ -50,13 +45,13 @@ const QrCard = ({ data, delay }: { data: typeof weddingInfo.groom; delay: number
   )
 }
 
-const WeddingGift = () => {
+const WeddingGift = ({ weddingGift = {} }: { weddingGift: any }) => {
   return (
     <section
       id="gifts"
       className="relative overflow-hidden"
       style={{
-        backgroundImage: `url('/layout/gifts.png')`,
+        backgroundImage: `url('/layout/gifts')`,
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
@@ -88,9 +83,9 @@ const WeddingGift = () => {
 
         <div className="flex flex-wrap gap-10 justify-center items-center mb-4 ">
 
-          <QrCard data={weddingInfo.groom} delay={0.3} />
+          <QrCard data={weddingGift.groom} delay={0.3} />
 
-          <QrCard data={weddingInfo.bride} delay={0.4} />
+          <QrCard data={weddingGift.bride} delay={0.4} />
         </div>
 
         <motion.p

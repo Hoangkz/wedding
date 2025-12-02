@@ -1,6 +1,5 @@
 "use client"
 import { motion } from "framer-motion"
-import { useParams } from "next/navigation"
 import { toast } from "react-toastify"
 
 import CountdownTimer from "@/components/CountdownTimer"
@@ -9,13 +8,9 @@ import { appWeddingClient } from "@/lib/ApiClient"
 import FloatingHearts from "../FloatingIcons"
 import { Heart } from "../Heart"
 
-const Hero = () => {
-  const { id } = useParams()
-  const accept = async () => {
+const Hero = ({ heroData }: { heroData: any }) => {
+  const accept = async (id: string) => {
     if (!id) {
-      toast.warning(
-        "Lỗi: Không thể xác nhận. Vui lòng đảm bảo bạn đang truy cập bằng đường dẫn thiệp mời đầy đủ!"
-      )
       return
     }
     try {
@@ -24,7 +19,7 @@ const Hero = () => {
     } catch (error: any) {
       toast.warning(
         error?.response?.data?.error ||
-          "Lỗi: Không thể xác nhận. Vui lòng đảm bảo bạn đang truy cập bằng đường dẫn thiệp mời đầy đủ!"
+        "Lỗi: Không thể xác nhận. Vui lòng đảm bảo bạn đang truy cập bằng đường dẫn thiệp mời đầy đủ!"
       )
     }
   }
@@ -33,7 +28,7 @@ const Hero = () => {
       id="/#"
       className="relative overflow-hidden"
       style={{
-        backgroundImage: `url('/layout/home.png')`,
+        backgroundImage: `url('/layout/home')`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         WebkitBackgroundSize: "cover",
@@ -57,7 +52,7 @@ const Hero = () => {
               viewport={{ once: false, amount: 0.3 }}
               transition={{ duration: 1.2 }}
             >
-              Kiến Văn
+              {heroData.brideName}
             </motion.h1>
 
             <motion.div
@@ -78,7 +73,7 @@ const Hero = () => {
               viewport={{ once: false, amount: 0.3 }}
               transition={{ duration: 1.2 }}
             >
-              Việt Hoài
+              {heroData.groomName}
             </motion.h1>
           </div>
 
@@ -98,7 +93,7 @@ const Hero = () => {
             viewport={{ once: false, amount: 0.3 }}
             transition={{ delay: 0.8, duration: 1 }}
           >
-            <CountdownTimer />
+            <CountdownTimer weddingDate={heroData.weddingDate} />
           </motion.div>
 
           <motion.button
@@ -113,7 +108,12 @@ const Hero = () => {
             whileTap={{ scale: 0.95 }}
             animate={{ opacity: [0.6, 1, 0.6, 1, 0.6] }}
             transition={{ duration: 2, repeat: Infinity }}
-            onClick={accept}
+            onClick={() => {
+              const newId = localStorage.getItem("id")
+              if (newId) {
+                accept(newId)
+              }
+            }}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

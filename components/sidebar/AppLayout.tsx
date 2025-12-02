@@ -4,7 +4,7 @@ import { AppSidebar } from "@/components/app-sidebar"
 import { Breadcrumb, BreadcrumbItem, BreadcrumbList } from "@/components/ui/breadcrumb"
 import { Separator } from "@/components/ui/separator"
 import { SidebarTrigger } from "@/components/ui/sidebar"
-import { useAdminContext } from "@/hooks/admin.context"
+import { useAdminContext } from "@/context/admin.context"
 import { usePathname } from "next/navigation"
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {

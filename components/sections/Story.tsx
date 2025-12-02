@@ -1,7 +1,7 @@
 
 "use client"
 import { motion } from "framer-motion"
-import { AArrowDown, Flower2, Heart, Home, Quote } from "lucide-react"
+import { Quote } from "lucide-react"
 import Image from "next/image"
 import React from "react"
 import FloatingHearts from "../FloatingIcons"
@@ -10,56 +10,56 @@ import { Heart1, Heart2 } from "../Heart"
 interface StoryEvent {
   year: number
   title: string
-  description: string
+  desc: string
   Icon: React.ElementType
   alignment: "left" | "right"
 }
 
-const storyEvents: StoryEvent[] = [
-  {
-    year: 2018,
-    title: "Lần đầu gặp gỡ",
-    description:
-      "Chúng tôi tình cờ gặp nhau tại một buổi tiệc sinh nhật của người bạn chung. Tình yêu sét đánh từ cái nhìn đầu tiên!",
-    Icon: Heart,
-    alignment: "right",
-  },
-  {
-    year: 2019,
-    title: "Hẹn hò chính thức",
-    description:
-      "Sau nhiều tháng tìm hiểu, chúng tôi chính thức trở thành một cặp. Những buổi hẹn hò lãng mạn bắt đầu.",
-    Icon: Flower2,
-    alignment: "left",
-  },
-  {
-    year: 2021,
-    title: "Lời cầu hôn lãng mạn",
-    description:
-      'Anh ấy quỳ gối dưới ánh nến và nói lời cầu hôn lãng mạn nhất. Cô ấy đã nói "Em đồng ý!".',
-    Icon: AArrowDown,
-    alignment: "right",
-  },
-  {
-    year: 2022,
-    title: "Ngày cưới hạnh phúc",
-    description:
-      "Một chương mới được mở ra. Chúng tôi sẽ cùng nhau xây dựng tổ ấm và đồng hành suốt cuộc đời.",
-    Icon: Home,
-    alignment: "left",
-  },
-]
+// const storyEvents: StoryEvent[] = [
+//   {
+//     year: 2018,
+//     title: "Lần đầu gặp gỡ",
+//     desc:
+//       "Chúng tôi tình cờ gặp nhau tại một buổi tiệc sinh nhật của người bạn chung. Tình yêu sét đánh từ cái nhìn đầu tiên!",
+//     Icon: Heart,
+//     alignment: "right",
+//   },
+//   {
+//     year: 2019,
+//     title: "Hẹn hò chính thức",
+//     desc:
+//       "Sau nhiều tháng tìm hiểu, chúng tôi chính thức trở thành một cặp. Những buổi hẹn hò lãng mạn bắt đầu.",
+//     Icon: Flower2,
+//     alignment: "left",
+//   },
+//   {
+//     year: 2021,
+//     title: "Lời cầu hôn lãng mạn",
+//     desc:
+//       'Anh ấy quỳ gối dưới ánh nến và nói lời cầu hôn lãng mạn nhất. Cô ấy đã nói "Em đồng ý!".',
+//     Icon: AArrowDown,
+//     alignment: "right",
+//   },
+//   {
+//     year: 2022,
+//     title: "Ngày cưới hạnh phúc",
+//     desc:
+//       "Một chương mới được mở ra. Chúng tôi sẽ cùng nhau xây dựng tổ ấm và đồng hành suốt cuộc đời.",
+//     Icon: Home,
+//     alignment: "left",
+//   },
+// ]
 
 const themeColor = "text-[#e32b42]"
 const themeBg = "bg-[#e32b42]"
 
-const Story: React.FC = () => {
+const Story = ({ storyEvents }: { storyEvents: any[] }) => {
   return (
     <section
       id="story"
       className="relative"
       style={{
-        backgroundImage: `url('/layout/story.png')`,
+        backgroundImage: `url('/layout/story')`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         WebkitBackgroundSize: "cover",
@@ -132,9 +132,10 @@ const Story: React.FC = () => {
                             "
             ></div>
 
-            {storyEvents.map((event, index) => (
-              <motion.div
-                key={index}
+            {storyEvents?.map((event, index) => {
+              const check = index % 2
+              return <motion.div
+                key={event.id}
                 className="relative"
                 initial={{ opacity: 0, y: 60 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -143,7 +144,7 @@ const Story: React.FC = () => {
               >
                 <div
                   className={`mb-8 flex justify-end md:justify-between items-center w-full 
-                                    ${event.alignment === "right"
+                                    ${check
                       ? "md:flex-row-reverse"
                       : "md:flex-row"
                     }`}
@@ -156,7 +157,7 @@ const Story: React.FC = () => {
                                                 absolute top-5 h-0 w-0 border-solid border-transparent
                                                 border-t-[16px] border-b-[16px]
                                                 border-r-[18px] border-r-white left-[-16px]
-                                                ${event.alignment === "right"
+                                                ${check
                           ? "md:border-r-[18px] md:border-r-white md:left-[-16px] md:border-l-0 md:right-auto"
                           : "md:border-l-[18px] md:border-l-white md:right-[-16px] md:border-r-0 md:left-auto"
                         }
@@ -164,7 +165,7 @@ const Story: React.FC = () => {
                     ></div>
 
                     <div
-                      className={`p-4 rounded-lg shadow-lg ${event.alignment === "right" ? "md:text-right" : "md:text-left"
+                      className={`p-4 rounded-lg shadow-lg ${check ? "md:text-right" : "md:text-left"
                         } bg-gray-50 hover:shadow-xl transition-shadow duration-300`}
                     >
                       <h3
@@ -176,17 +177,28 @@ const Story: React.FC = () => {
                       >
                         {event.title}
                       </h3>
-                      <p className="text-gray-700 text-justify">{event.description}</p>
-                    </div>
-                  </div>
+                      <p className="text-gray-700 text-justify">{event.desc}</p>
 
-                  <div className="hidden md:flex flex-col items-center w-2/12">
-                    <div
-                      className={`w-8 h-8 rounded-full ${themeBg} flex items-center justify-center shadow-lg`}
-                    >
-                      <event.Icon className="w-5 h-5 text-white" />
                     </div>
                   </div>
+                  {event?.image &&
+                    <div className="hidden md:flex flex-col items-center rounded w-2/12">
+                      <div
+                        className={`flex items-center justify-center shadow-lg`}
+                      >
+                        <img src={event.image} className="rounded" />
+                      </div>
+                    </div>
+                  }
+                  {event?.Icon &&
+                    <div className="hidden md:flex flex-col items-center w-2/12">
+                      <div
+                        className={`w-8 h-8 rounded-full ${themeBg} flex items-center justify-center shadow-lg`}
+                      >
+                        {/* <event.Icon className="w-5 h-5 text-white" /> */}
+                      </div>
+                    </div>
+                  }
                 </div>
 
                 <div className="hidden md:block w-full absolute top-0">
@@ -202,7 +214,7 @@ const Story: React.FC = () => {
                   </div>
                 </div>
               </motion.div>
-            ))}
+            })}
           </div>
 
           <motion.div

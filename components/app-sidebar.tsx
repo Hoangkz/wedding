@@ -10,10 +10,11 @@ import {
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
-  SidebarRail,
+  SidebarRail
 } from "@/components/ui/sidebar"
-import { useAdminContext } from "@/hooks/admin.context"
+import { useAdminContext } from "@/context/admin.context"
 
+import Link from "next/link"
 import { HeaderSidebar } from "./sidebar/HeaderSideBar"
 
 const user = {
@@ -26,11 +27,14 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { navAdminDashBoard } = useAdminContext()
   return (
     <Sidebar collapsible="icon" {...props}>
-      <SidebarHeader>
-        <HeaderSidebar data={{ logo: Flame, name: "Admin", plan: "Hệ thống quản trị" }} />
+      <SidebarHeader >
+        <Link href="/" passHref >
+          <HeaderSidebar data={{ logo: Flame, name: "Admin", plan: "Hệ thống quản trị" }} />
+        </Link>
       </SidebarHeader>
       <SidebarContent>
         <NavSidebar data={navAdminDashBoard} />
+
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={user} />

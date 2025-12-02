@@ -1,35 +1,9 @@
 "use client"
 
-import {
-  Calendar,
-  Gift,
-  HeartHandshake,
-  Home,
-  Image,
-  MailCheck,
-  MessageSquare,
-  Users,
-} from "lucide-react"
+import { useFeatures } from "@/context/feature.context"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import React, { useEffect, useState } from "react"
-
-interface NavItem {
-  name: string
-  href: string
-  Icon: React.ElementType
-}
-
-export const navItems: NavItem[] = [
-  { name: "Home", href: "/", Icon: Home },
-  { name: "Thư mời", href: "/#letter", Icon: MailCheck },
-  { name: "Cặp đôi", href: "/#couple", Icon: Users },
-  { name: "Chuyện tình yêu", href: "/#story", Icon: HeartHandshake },
-  { name: "Lịch trình", href: "/#wedding-events", Icon: Calendar },
-  { name: "Photo Album", href: "/#album", Icon: Image },
-  { name: "Lời chúc", href: "/#wishes", Icon: MessageSquare },
-  { name: "Mừng cưới", href: "/#gifts", Icon: Gift },
-]
 
 interface DesktopNavProps {
   baseIdPath: string
@@ -39,7 +13,7 @@ const DesktopNav: React.FC<DesktopNavProps> = ({ baseIdPath }) => {
   const pathname = usePathname()
   const [currentHash, setCurrentHash] = useState("")
   const [isMounted, setIsMounted] = useState(false)
-
+  const { navItems } = useFeatures();
   const isHashPage = pathname === "/" || pathname.match(/^\/[^/]+$/)
 
   useEffect(() => {
@@ -111,6 +85,9 @@ const DesktopNav: React.FC<DesktopNavProps> = ({ baseIdPath }) => {
   return (
     <ul className="hidden md:flex space-x-2 lg:space-x-4">
       {navItems.map((item) => {
+        if (!item.isOptional) {
+          return
+        }
         const active = isActive(item.href)
         const activeClasses = "text-[#f0394d] font-bold"
         const defaultClasses = "text-gray-700 hover:text-[#f0394d]"
@@ -125,21 +102,19 @@ const DesktopNav: React.FC<DesktopNavProps> = ({ baseIdPath }) => {
           <li key={item.name} className="relative group">
             <Link
               href={fullHref}
-              className={`flex flex-col items-center p-2 text-xs lg:text-sm font-medium transition-colors relative ${
-                active ? activeClasses : defaultClasses
-              }`}
-            >
+              className={`flex flex-col items-center p-2 text-xs lg:text-sm font-medium transition-colors relative ${active ? activeClasses : defaultClasses
+                }`}
+            >{item.Icon &&
               <item.Icon
                 className={`w-5 h-5 lg:w-6 lg:h-6 mb-1 ${active ? "text-[#f0394d]" : "text-gray-500 group-hover:text-[#f0394d]"} transition-colors`}
               />
-
+              }
               <span>{item.name}</span>
             </Link>
 
             <span
-              className={`absolute left-0 right-0 bottom-0 h-0.5 bg-[#f0394d] transition-transform duration-300 ${
-                active ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
-              }`}
+              className={`absolute left-0 right-0 bottom-0 h-0.5 bg-[#f0394d] transition-transform duration-300 ${active ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+                }`}
             ></span>
           </li>
         )

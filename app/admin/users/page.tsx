@@ -7,28 +7,6 @@ import Image from "next/image"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { toast } from "react-toastify"
 
-interface User {
-  id: string
-  userName: string
-  shortName?: string | null
-  name?: string | null
-  dob?: string | null 
-  phone?: string | null
-  qrCodeUrl?: string | null
-  address?: string | null
-  mapUrl?: string | null
-  father?: string | null
-  mother?: string | null
-  bio?: string | null
-  note?: string | null
-  title?: string | null
-  bank?: string | null
-  account?: string | null
-  weddingDate?: string | null
-  weddingTime?: string | null
-  createdAt: string
-}
-
 const initialFormData: Partial<User> = {
   shortName: "",
   name: "",
@@ -54,7 +32,7 @@ export default function UserManagementPage() {
   const [searchTerm, setSearchTerm] = useState("")
   const [currentPage, setCurrentPage] = useState(1)
   const [itemsPerPage] = useState(10)
-  
+
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [editingUser, setEditingUser] = useState<Partial<User> | null>(null)
 
@@ -63,7 +41,7 @@ export default function UserManagementPage() {
     return dayjs(date).isValid() ? dayjs(date).format("YYYY-MM-DD") : ""
   }
 
-  const fetchUsers =useCallback( async () => {
+  const fetchUsers = useCallback(async () => {
     setLoading(true)
     try {
       const response = await appWeddingClient.getUsers()
@@ -78,12 +56,12 @@ export default function UserManagementPage() {
     } finally {
       setLoading(false)
     }
-  },[])
+  }, [])
 
   useEffect(() => {
     fetchUsers()
   }, [fetchUsers])
-  
+
   const filteredUsers = useMemo(() => {
     return users.filter(
       (user) =>
@@ -122,11 +100,11 @@ export default function UserManagementPage() {
 
     try {
       if (editingUser.id) {
-        
+
         await appWeddingClient.updateUser(editingUser.id, editingUser)
-        toast.success("Cập nhật người dùng thành công! ✨")
+        toast.success("Cập nhật người dùng thành công!")
       } else {
-        
+
         if (!editingUser.userName) {
           toast.error("Tên đăng nhập không được để trống!")
           return
@@ -137,20 +115,20 @@ export default function UserManagementPage() {
           userName: editingUser.userName,
           password: "12345",
         }
-        
+
         await appWeddingClient.createUser(newUserPayload)
         toast.success("Thêm người dùng thành công! Mật khẩu mặc định: 12345!")
       }
 
-      fetchUsers() 
+      fetchUsers()
       setIsModalOpen(false)
     } catch (err: any) {
-      
+
       const errorMsg = err?.response?.data?.error || "Lưu thông tin người dùng thất bại!"
       toast.error(errorMsg)
     }
   }
-  
+
   const handleDelete = async (userId: string) => {
     if (
       window.confirm("Bạn có chắc chắn muốn xóa người dùng này? Thao tác này không thể hoàn tác.")
@@ -167,7 +145,7 @@ export default function UserManagementPage() {
 
   return (
     <div>
-      <div className="bg-white rounded-xl shadow-xl p-6 space-y-4">
+      <div className="bg-white rounded-xl shadow-xl p-4 space-y-4">
         <div className="flex flex-col md:flex-row justify-between items-center space-y-3 md:space-y-0">
           <Input
             type="text"
@@ -186,13 +164,12 @@ export default function UserManagementPage() {
             Thêm người dùng mới
           </Button>
         </div>
-
         {loading ? (
           <div className="text-center py-10 text-gray-500">Đang tải dữ liệu...</div>
         ) : (
           <>
             <Table
-              headers={["ID", "Username", "Tên đầy đủ", "Điện thoại", "Ngày cưới", "Hành động"]}
+              headers={["ID", "Tên đăng nhập", "Họ và tên", "Điện thoại", "Ngày cưới", "Loại tài khoản", "Hành động"]}
             >
               {paginatedUsers.map((user) => (
                 <tr key={user.id} className="hover:bg-gray-50 transition-colors">
@@ -206,6 +183,9 @@ export default function UserManagementPage() {
                   <td className="p-3 text-sm text-gray-700">{user.phone || "N/A"}</td>
                   <td className="p-3 text-sm text-gray-700">
                     {user.weddingDate ? dayjs(user.weddingDate).format("DD/MM/YYYY") : "Chưa có"}
+                  </td>
+                  <td className="p-3 text-sm text-gray-700">
+                    {user.type === "Groom" ? "Cô dâu" : user.type === "Bride" ? "Chú rể" : "Người dùng"}
                   </td>
                   <td className="flex space-x-2">
                     <Button
@@ -224,7 +204,7 @@ export default function UserManagementPage() {
                 </tr>
               ))}
             </Table>
-            
+
             {totalPages > 1 && (
               <Pagination
                 currentPage={currentPage}
@@ -235,7 +215,7 @@ export default function UserManagementPage() {
           </>
         )}
       </div>
-      
+
       <UserModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
@@ -287,7 +267,7 @@ export const TextArea = ({
   className = "",
   placeholder = "",
 }: any) => (
-  <div className={`flex flex-col space-y-1 ${className}`}>
+  <div className={`flex flex-col ${className}`}>
     <label htmlFor={name} className="font-semibold text-gray-700 text-sm">
       {label}
     </label>
@@ -360,16 +340,16 @@ const UserModal = ({ isOpen, onClose, user, onChange, onSave }: any) => {
   const isNew = !user.id
 
   return (
-    
+
     <div className="fixed inset-0 flex items-center justify-center bg-black/60 z-50 p-4">
-      
+
       <div className="bg-white rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col">
-        
+
         <div className="flex justify-between items-center p-3 border-b border-gray-200 sticky top-0 bg-white z-10">
           <h2 className="text-2xl font-bold text-gray-800 ">
             {isNew ? "Thêm người dùng Mới" : `Chỉnh sửa người dùng: ${user.userName}`}
           </h2>
-          
+
           <button
             onClick={onClose}
             className="cursor-pointer p-2 rounded-full hover:bg-gray-100 transition-colors text-gray-500"
@@ -378,11 +358,11 @@ const UserModal = ({ isOpen, onClose, user, onChange, onSave }: any) => {
             <X size={24} />
           </button>
         </div>
-        
-        <div className="flex-grow overflow-y-auto p-6">
+
+        <div className="flex-grow overflow-y-auto p-4">
           <form onSubmit={onSave} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              
+
               <Input
                 label="Username (Tên đăng nhập) *"
                 name="userName"
@@ -391,7 +371,7 @@ const UserModal = ({ isOpen, onClose, user, onChange, onSave }: any) => {
                 disabled={!isNew}
                 className={!isNew ? "bg-gray-100" : isNew && !user.userName ? "border-red-500" : ""}
               />
-              
+
               {isNew && (
                 <div className="flex flex-col space-y-1">
                   <label className="font-semibold text-gray-700 text-sm">Mật khẩu</label>
@@ -404,7 +384,7 @@ const UserModal = ({ isOpen, onClose, user, onChange, onSave }: any) => {
                   />
                 </div>
               )}
-              
+
               <Input
                 label="Tên gọi tắt"
                 name="shortName"
@@ -412,7 +392,7 @@ const UserModal = ({ isOpen, onClose, user, onChange, onSave }: any) => {
                 onChange={onChange}
               />
               <Input label="Tên đầy đủ" name="name" value={user.name} onChange={onChange} />
-              
+
               <Input
                 label="Ngày sinh"
                 name="dob"
@@ -423,7 +403,7 @@ const UserModal = ({ isOpen, onClose, user, onChange, onSave }: any) => {
               <Input label="Số điện thoại" name="phone" value={user.phone} onChange={onChange} />
               <Input label="Tiêu đề trang" name="title" value={user.title} onChange={onChange} />
 
-              <Input label="Tên Cha" name="father" value={user.father} onChange={onChange} />
+              <Input label="Tên Bố" name="father" value={user.father} onChange={onChange} />
               <Input label="Tên Mẹ" name="mother" value={user.mother} onChange={onChange} />
               <div className="col-span-1"></div>
 
@@ -473,7 +453,7 @@ const UserModal = ({ isOpen, onClose, user, onChange, onSave }: any) => {
                 onChange={onChange}
                 className="lg:col-span-3"
               />
-              
+
               {user.qrCodeUrl && (
                 <div className="lg:col-span-3 flex items-center space-x-4 border p-3 rounded-lg bg-gray-50">
                   <label className="font-semibold text-gray-700 text-sm min-w-[150px]">
@@ -496,8 +476,8 @@ const UserModal = ({ isOpen, onClose, user, onChange, onSave }: any) => {
             </div>
           </form>
         </div>
-        
-        <div className="flex justify-end space-x-3 border-t pt-4 p-6 sticky bottom-0 bg-white z-10">
+
+        <div className="flex justify-end space-x-3 border-t pt-4 p-4 sticky bottom-0 bg-white z-10">
           <Button
             type="button"
             onClick={onClose}
@@ -506,8 +486,8 @@ const UserModal = ({ isOpen, onClose, user, onChange, onSave }: any) => {
             Hủy
           </Button>
           <Button
-            onClick={onSave} 
-            type="submit" 
+            onClick={onSave}
+            type="submit"
             className="cursor-pointer bg-blue-600 text-white hover:bg-blue-700"
           >
             Lưu {isNew ? "Mới" : "Thay đổi"}
@@ -518,6 +498,7 @@ const UserModal = ({ isOpen, onClose, user, onChange, onSave }: any) => {
   )
 }
 
+import { User } from "@/context/admin.context"
 import React, { SelectHTMLAttributes } from "react"
 
 interface SelectOption {
@@ -530,11 +511,9 @@ interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   name: string
   value: string | number
   options: SelectOption[]
-  
   className?: string
-  
   labelClassName?: string
-  
+  optionNull?: boolean
   error?: string
 }
 
@@ -547,24 +526,25 @@ export const Select: React.FC<SelectProps> = ({
   className = "",
   labelClassName = "",
   error,
+  optionNull = false,
   ...rest
 }) => {
-  
+
   const id = `select-${name}`
 
   return (
     <div className={`flex flex-col space-y-1 ${className}`}>
-      
-      <label htmlFor={id} className={`font-semibold text-gray-700 text-sm ${labelClassName}`}>
-        {label}
-      </label>
-      
+      {label &&
+        <label htmlFor={id} className={`font-semibold text-gray-700 text-sm ${labelClassName}`}>
+          {label}
+        </label>
+      }
       <select
         id={id}
         name={name}
         value={value}
         onChange={onChange}
-        
+
         className={`
                     w-full px-3 py-1.5 border rounded-lg 
                     shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
@@ -574,18 +554,18 @@ export const Select: React.FC<SelectProps> = ({
                 `}
         {...rest}
       >
-        
-        <option value="" disabled>
-          Chọn một tùy chọn
-        </option>
-        
+        {!optionNull &&
+          <option value="" disabled>
+            Chọn một tùy chọn
+          </option>
+        }
         {options.map((option) => (
           <option key={option.value} value={option.value || ""}>
             {option.label}
           </option>
         ))}
       </select>
-      
+
       {error && <p className="text-xs text-red-500 mt-1">{error}</p>}
     </div>
   )

@@ -30,24 +30,22 @@ export async function PUT(req: NextRequest, { params }: Context) {
     const userId = (await params).id
     const body = await req.json()
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { id, userName, password, qrCodeUrl, ...rest } = body
-
+    const { id, userName, password, qrCodeUrl, qrCodeFile, avatar, avatarFile, dob, weddingDate, ...rest } = body
     const dataToUpdate: User = { ...rest }
-
-    if (qrCodeUrl && qrCodeUrl.startsWith("data:")) {
-      const newQrCodeUrl = await saveBase64ImageAndGetUrl(qrCodeUrl, userId)
-      dataToUpdate.qrCodeUrl = newQrCodeUrl
-    } else if (qrCodeUrl) {
-      dataToUpdate.qrCodeUrl = qrCodeUrl
-    } else {
-      dataToUpdate.qrCodeUrl = null
+    if (qrCodeFile && qrCodeFile.startsWith("data:")) {
+      await saveBase64ImageAndGetUrl(qrCodeFile, "/qr/" + userId)
+      dataToUpdate.qrCodeUrl = "/qr/" + userId
     }
-    if (rest.dob) {
-      dataToUpdate.dob = dayjs(rest.dob).toDate()
+    if (avatarFile && avatarFile.startsWith("data:")) {
+      await saveBase64ImageAndGetUrl(avatarFile, "/avatar/" + userId)
+      dataToUpdate.avatar = "/avatar/" + userId
     }
 
-    if (rest.weddingDate) {
-      dataToUpdate.weddingDate = dayjs(rest.weddingDate).toDate()
+    if (dob) {
+      dataToUpdate.dob = dayjs(dob).toDate()
+    }
+    if (weddingDate) {
+      dataToUpdate.weddingDate = dayjs(weddingDate).toDate()
     }
     const updated = await prisma.user.update({
       where: { id: userId },
@@ -55,7 +53,7 @@ export async function PUT(req: NextRequest, { params }: Context) {
     })
 
     return NextResponse.json(updated)
-  } catch {
+  } catch (err) {
     return NextResponse.json({ error: "Cập nhật thất bại" }, { status: 500 })
   }
 }

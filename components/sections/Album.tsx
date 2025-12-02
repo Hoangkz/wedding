@@ -1,11 +1,10 @@
 "use client"
 
-import { Variants, motion } from "framer-motion"
-import { ChevronLeft, ChevronRight, ChevronUp, X } from "lucide-react"
-import Image from "next/image"
-import { useCallback, useEffect, useRef, useState } from "react"
-
-import FloatingHearts from "../FloatingIcons"
+import { Variants, motion } from "framer-motion";
+import { ChevronLeft, ChevronRight, ChevronUp, X } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useSwipeable } from 'react-swipeable';
+import FloatingHearts from "../FloatingIcons";
 
 const itemFadeInRight: Variants = {
   hidden: { opacity: 0, x: 100 },
@@ -27,16 +26,6 @@ const WeddingAlbum = ({ images }: { images: string[] }) => {
   const currentThumb = useRef<HTMLImageElement | null>(null)
   const [isCollapsed, setIsCollapsed] = useState(true)
 
-  useEffect(() => {
-    if (currentThumb.current && thumbRef.current) {
-      const thumb = currentThumb.current
-      const container = thumbRef.current
-      const offsetLeft = thumb.offsetLeft - container.offsetLeft
-      const centerPosition = offsetLeft - container.clientWidth / 2 + thumb.clientWidth / 2
-      container.scrollTo({ left: centerPosition, behavior: "smooth" })
-    }
-  }, [current])
-
   const handlePrev = useCallback(() => {
     setCurrent((prev) => (prev === 0 ? images.length - 1 : prev - 1))
   }, [images.length])
@@ -45,27 +34,39 @@ const WeddingAlbum = ({ images }: { images: string[] }) => {
     setCurrent((prev) => (prev === images.length - 1 ? 0 : prev + 1))
   }, [images.length])
 
+  const handlers = useSwipeable({
+    onSwipedLeft: handleNext,
+    onSwipedRight: handlePrev,
+    trackMouse: true,
+    preventScrollOnSwipe: true,
+  });
+
+  useEffect(() => {
+    if (currentThumb.current && thumbRef.current) {
+      const thumb = currentThumb.current
+      const container = thumbRef.current
+
+      const centerPosition = thumb.offsetLeft - container.clientWidth / 2 + thumb.clientWidth / 2
+      container.scrollTo({ left: centerPosition, behavior: "smooth" })
+    }
+  }, [current])
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        setShowSlideshow(false)
-      } else if (e.key === "ArrowLeft") {
-        handlePrev()
-      } else if (e.key === "ArrowRight") {
-        handleNext()
+      if (showSlideshow) {
+        if (e.key === "Escape") {
+          setShowSlideshow(false)
+        } else if (e.key === "ArrowLeft") {
+          handlePrev()
+        } else if (e.key === "ArrowRight") {
+          handleNext()
+        }
       }
     }
 
-    if (showSlideshow) {
-      document.body.style.overflow = "hidden"
-      window.addEventListener("keydown", handleKeyDown)
-    } else {
-      document.body.style.overflow = "auto"
-      window.removeEventListener("keydown", handleKeyDown)
-    }
+    window.addEventListener("keydown", handleKeyDown)
 
     return () => {
-      document.body.style.overflow = "auto"
       window.removeEventListener("keydown", handleKeyDown)
     }
   }, [showSlideshow, handlePrev, handleNext])
@@ -74,10 +75,10 @@ const WeddingAlbum = ({ images }: { images: string[] }) => {
     if (showSlideshow) {
       document.body.style.overflow = "hidden"
     } else {
-      document.body.style.overflow = ""
+      document.body.style.overflow = "auto"
     }
     return () => {
-      document.body.style.overflow = ""
+      document.body.style.overflow = "auto"
     }
   }, [showSlideshow])
 
@@ -87,7 +88,7 @@ const WeddingAlbum = ({ images }: { images: string[] }) => {
         id="album"
         className="relative overflow-hidden"
         style={{
-          backgroundImage: `url('/layout/album.png')`,
+          backgroundImage: `url('/layout/album')`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
@@ -100,7 +101,7 @@ const WeddingAlbum = ({ images }: { images: string[] }) => {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 1 }}
             className=" test text-5xl md:text-6xl font-bold bg-gradient-to-r 
-                        from-pink-400 via-rose-400 to-amber-300 bg-clip-text text-transparent drop-shadow-lg"
+                                 from-pink-400 via-rose-400 to-amber-300 bg-clip-text text-transparent drop-shadow-lg"
           >
             Album Hình Cưới
           </motion.h1>
@@ -126,9 +127,7 @@ const WeddingAlbum = ({ images }: { images: string[] }) => {
                 custom={i}
                 className="flex items-start"
               >
-                <Image
-                  width={64}
-                  height={64}
+                <img
                   src={src}
                   alt={`wedding-${i}`}
                   className="hover:scale-105 hover:opacity-80 rounded-2xl shadow-md object-contain max-h-[300px] cursor-pointer"
@@ -159,25 +158,26 @@ const WeddingAlbum = ({ images }: { images: string[] }) => {
 
       {showSlideshow && (
         <div
-          className="fixed inset-0 bg-black/90 flex flex-col items-center justify-center z-[1000]"
+          className="fixed inset-0 bg-black/90 flex flex-col items-center justify-center z-[1000] select-none"
           style={{ overflowY: "hidden" }}
         >
           <button
             onClick={() => setShowSlideshow(false)}
             className="absolute top-5 right-6 bg-gradient-to-r
-                            from-pink-400 to-rose-500 text-white p-3 rounded-full
-                            shadow-xl backdrop-blur-md hover:scale-110 transition-all duration-300"
+                                    from-pink-400 to-rose-500 text-white p-3 rounded-full
+                                    shadow-xl backdrop-blur-md hover:scale-110 transition-all duration-300 z-[1001]"
             title="Đóng"
           >
             <X className="w-5 h-5" />
           </button>
 
-          <Image
-            width={64}
-            height={64}
+          <img
+            {...handlers}
             src={images[current]}
             alt="slideshow"
-            className=" max-h-[80vh] max-w-[90vw] rounded-2xl object-contain mb-6 shadow-2xl transition-all duration-300"
+            className=" max-h-[80vh] max-w-[90vw] rounded-2xl object-contain mb-6 shadow-2xl 
+                                    transition-all duration-300 cursor-grab select-none **select-none**"
+            style={{ touchAction: 'pan-y' }}
           />
 
           {isCollapsed && (
@@ -185,8 +185,8 @@ const WeddingAlbum = ({ images }: { images: string[] }) => {
               <button
                 onClick={handlePrev}
                 className="cursor-pointer absolute left-0 bg-white/20 backdrop-blur-md text-white
-                                    border border-white/30 p-3 rounded-full shadow-lg
-                                    hover:bg-white/40 hover:scale-110 opacity-80 hover:opacity-100 transition-all duration-300"
+                                             border border-white/30 p-3 rounded-full shadow-lg
+                                             hover:bg-white/40 hover:scale-110 opacity-80 hover:opacity-100 transition-all duration-300"
                 title="Ảnh trước"
               >
                 <ChevronLeft className="w-7 h-7" />
@@ -195,26 +195,23 @@ const WeddingAlbum = ({ images }: { images: string[] }) => {
               <div
                 ref={thumbRef}
                 className="flex gap-3 overflow-x-auto p-3 bg-black/40 rounded-xl mx-14
-                                    scrollbar-thin scrollbar-thumb-pink-400 scrollbar-track-transparent scroll-smooth"
+                                             scrollbar-thin scrollbar-thumb-pink-400 scrollbar-track-transparent scroll-smooth"
                 style={{
                   scrollbarColor: "rgba(244,114,182,0.8) transparent",
                   scrollbarWidth: "thin",
                 }}
               >
                 {images.map((src, i) => (
-                  <Image
-                    width={64}
-                    height={64}
+                  <img
                     key={i}
                     ref={i === current ? currentThumb : null}
                     src={src}
                     alt={`thumb-${i}`}
                     onClick={() => setCurrent(i)}
-                    className={`h-16 w-16 object-cover rounded-md cursor-pointer border-2 transition ${
-                      i === current
-                        ? "border-pink-500 scale-110 shadow-lg"
-                        : "border-transparent opacity-70 hover:opacity-100"
-                    }`}
+                    className={`h-16 w-16 object-cover rounded-md cursor-pointer border-2 transition ${i === current
+                      ? "border-pink-500 scale-110 shadow-lg"
+                      : "border-transparent opacity-70 hover:opacity-100"
+                      }`}
                   />
                 ))}
               </div>
@@ -222,32 +219,34 @@ const WeddingAlbum = ({ images }: { images: string[] }) => {
               <button
                 onClick={handleNext}
                 className="cursor-pointer absolute right-0 bg-white/20 backdrop-blur-md text-white border border-white/30 p-3 rounded-full shadow-lg
-                                    hover:bg-white/40 hover:scale-110 opacity-80 hover:opacity-100 transition-all duration-300"
+                                             hover:bg-white/40 hover:scale-110 opacity-80 hover:opacity-100 transition-all duration-300"
                 title="Ảnh sau"
               >
                 <ChevronRight className="w-7 h-7" />
               </button>
+
               <button
                 onClick={() => setIsCollapsed(!isCollapsed)}
                 className={`text-white hover:scale-105 w-8 h-8 flex items-center justify-center
-                                        rounded-full shadow-lg backdrop-blur-sm transition-all duration-300 opacity-80
-                                        hover:opacity-100 absolute left-1/2 -translate-x-1/2 -top-1 bg-gray-500/40
-                                        hover:bg-gray-500/70`}
+                                             rounded-full shadow-lg backdrop-blur-sm transition-all duration-300 opacity-80
+                                             hover:opacity-100 absolute left-1/2 -translate-x-1/2 -top-1 bg-gray-500/40
+                                             hover:bg-gray-500/70`}
                 title={isCollapsed ? "Ẩn dải ảnh" : "Hiện dải ảnh"}
               >
-                <ChevronUp />
+                <ChevronUp className="w-5 h-5" />
               </button>
             </div>
           )}
+
           {!isCollapsed && (
             <button
               onClick={() => setIsCollapsed(!isCollapsed)}
               className={`text-white hover:scale-105 w-8 h-8 flex items-center justify-center
-                                rounded-full shadow-lg backdrop-blur-sm transition-all duration-300 opacity-80
-                                hover:opacity-100 bg-gray-500/40 hover:bg-gray-500/70`}
+                                         rounded-full shadow-lg backdrop-blur-sm transition-all duration-300 opacity-80
+                                         hover:opacity-100 bg-gray-500/40 hover:bg-gray-500/70 fixed bottom-5`}
               title={isCollapsed ? "Ẩn dải ảnh" : "Hiện dải ảnh"}
             >
-              <ChevronUp />
+              <ChevronUp className="w-5 h-5 rotate-180" />
             </button>
           )}
         </div>

@@ -6,28 +6,28 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
-    const { name, type, invitation, invitedAt, attended = false } = body
-    
+    const { name, type, invitation, invitedAt, attended = false, lunarDate } = body
+
     if (!name || !type || !invitation || !invitedAt) {
       return NextResponse.json(
         { error: "Thiếu các trường bắt buộc (name, type, invitation, invitedAt)." },
         { status: 400 }
       )
     }
-    
+
     const invitedDate = new Date(invitedAt)
     if (isNaN(invitedDate.getTime())) {
       return NextResponse.json({ error: "Định dạng ngày/giờ mời không hợp lệ." }, { status: 400 })
     }
     const data = {
-      id: generateId(),
+      id: generateId(6, "1234567890"),
       name,
       type,
       invitation,
       invitedAt: dayjs(invitedAt).toDate(),
-      attended,
+      attended, lunarDate
     }
-    
+
     const newCustomer = await prisma.customer.create({
       data: data,
     })
@@ -52,7 +52,7 @@ export async function POST(req: NextRequest) {
 export async function GET() {
   try {
     const customers = await prisma.customer.findMany({
-      orderBy: { invitedAt: "asc" }, 
+      orderBy: { invitedAt: "asc" },
     })
 
     return NextResponse.json({ customers }, { status: 200 })

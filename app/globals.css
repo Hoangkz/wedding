@@ -193,10 +193,16 @@
   line-height: 1.1;
   font-family: "Great Vibes", cursive;
   text-transform: capitalize;
-  font-size: 55px;
+  font-size: 50px;
   display: block;
 }
-
+.fontfamily{
+  font-family: 'Book Antiqua', Palatino, 'Palatino Linotype', 'Bookman Old Style', Georgia, serif;
+  font-weight: 500;
+  visibility: visible;
+  box-sizing: border-box;
+  line-height: 1.2;
+}
 /* cyrillic-ext */
 @font-face {
   font-family: "Great Vibes";

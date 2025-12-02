@@ -1,16 +1,17 @@
 "use client"
 
-import React, { useState, useEffect, useCallback } from "react"
+import { useFeatures } from "@/context/feature.context"
+import { ArrowLeft, ArrowRight, Heart, Menu, X } from "lucide-react"
 import Link from "next/link"
-import { usePathname, useRouter, useParams } from "next/navigation"
-import { Heart, Menu, X, ArrowRight, ArrowLeft } from "lucide-react"
-import DesktopNav, { navItems } from "./DesktopNav"
+import { useParams, usePathname, useRouter } from "next/navigation"
+import React, { useCallback, useEffect, useState } from "react"
+import DesktopNav from "./DesktopNav"
 
 const Header: React.FC = () => {
+  const { navItems } = useFeatures();
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [active, setActive] = useState("/#")
   const [isMounted, setIsMounted] = useState(false)
-
   const router = useRouter()
   const pathname = usePathname()
   const params = useParams()
@@ -134,26 +135,27 @@ const Header: React.FC = () => {
         </div>
 
         <nav
-          className={`md:hidden absolute top-16 right-0 w-64 h-[calc(100vh-4rem)] bg-white shadow-xl transition-transform duration-300 ease-in-out ${
-            isMenuOpen ? "translate-x-0" : "translate-x-full"
-          }`}
+          className={`md:hidden absolute top-16 right-0 w-64 h-[calc(100vh-4rem)] bg-white shadow-xl transition-transform duration-300 ease-in-out ${isMenuOpen ? "translate-x-0" : "translate-x-full"
+            }`}
         >
           <ul className="flex flex-col p-4 space-y-2">
-            {navItems.map((item) => (
-              <li key={item.name} className="w-full">
+            {navItems.map((item) => {
+              if (!item.isOptional) {
+                return
+              }
+              return <li key={item.name} className="w-full">
                 <Link
                   href={item.href.startsWith("/#") ? baseIdPath + item.href : item.href}
-                  className={`block px-3 py-2 rounded-md text-base font-medium transition-colors ${
-                    item.href === active
-                      ? "text-[#e32b42] font-bold bg-pink-50"
-                      : "text-gray-900 hover:bg-gray-100 hover:text-[#e32b42]"
-                  }`}
+                  className={`block px-3 py-2 rounded-md text-base font-medium transition-colors ${item.href === active
+                    ? "text-[#e32b42] font-bold bg-pink-50"
+                    : "text-gray-900 hover:bg-gray-100 hover:text-[#e32b42]"
+                    }`}
                   onClick={() => handleLinkClick(item.href)}
                 >
                   {item.name}
                 </Link>
               </li>
-            ))}
+            })}
           </ul>
         </nav>
 
@@ -173,11 +175,10 @@ const Header: React.FC = () => {
             className={`
                             cursor-pointer
                             flex items-center justify-center w-10 h-10 rounded-full shadow-lg transition-all duration-200 focus:outline-none focus:ring-4
-                            ${
-                              isFirst
-                                ? "bg-red-300 text-white cursor-not-allowed opacity-70"
-                                : "bg-[#e32b42] text-white hover:bg-red-700 focus:ring-red-400"
-                            }
+                            ${isFirst
+                ? "bg-red-300 text-white cursor-not-allowed opacity-70"
+                : "bg-[#e32b42] text-white hover:bg-red-700 focus:ring-red-400"
+              }
                         `}
             aria-label="Previous Section"
           >
@@ -190,11 +191,10 @@ const Header: React.FC = () => {
             className={`
                             cursor-pointer
                             flex items-center justify-center w-10 h-10 rounded-full shadow-lg transition-all duration-200 focus:outline-none focus:ring-4
-                            ${
-                              isLast
-                                ? "bg-red-300 text-white cursor-not-allowed opacity-70"
-                                : "bg-[#e32b42] text-white hover:bg-red-700 focus:ring-red-400"
-                            }
+                            ${isLast
+                ? "bg-red-300 text-white cursor-not-allowed opacity-70"
+                : "bg-[#e32b42] text-white hover:bg-red-700 focus:ring-red-400"
+              }
                         `}
             aria-label="Next Section"
           >

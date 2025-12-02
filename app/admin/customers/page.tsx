@@ -1,10 +1,10 @@
 "use client"
 
-import { useState, useEffect, useMemo } from "react"
-import { toast } from "react-toastify"
-import dayjs from "dayjs"
-import { FilePenLine, Trash, PlusCircle, X } from "lucide-react"
 import { appWeddingClient } from "@/lib/ApiClient"
+import dayjs from "dayjs"
+import { FilePenLine, PlusCircle, Trash, X } from "lucide-react"
+import { useEffect, useMemo, useState } from "react"
+import { toast } from "react-toastify"
 
 import { Button, Input, Pagination, Select, Table, TextArea } from "../users/page"
 
@@ -20,6 +20,7 @@ interface Customer {
   attended: AttendedStatus
   createdAt: string
   updatedAt: string
+  lunarDate: string
 }
 
 const initialFormData: Partial<Customer> = {
@@ -62,6 +63,7 @@ export default function CustomerManagementPage() {
   const [customers, setCustomers] = useState<Customer[]>([])
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState("")
+  const [searchType, setSearchType] = useState("")
   const [currentPage, setCurrentPage] = useState(1)
   const [itemsPerPage] = useState(10)
 
@@ -88,7 +90,6 @@ export default function CustomerManagementPage() {
     setEditingCustomer({
       ...customer,
       invitedAt: dayjs(customer.invitedAt).format("YYYY-MM-DDTHH:mm"),
-
       attended: customer.attended,
     })
     setIsModalOpen(true)
@@ -134,7 +135,7 @@ export default function CustomerManagementPage() {
         toast.success("Cập nhật khách hàng thành công!")
       } else {
         await appWeddingClient.createCustomer(payload)
-        toast.success("Thêm khách hàng thành công!")
+        toast.success("Thêm khách mời thành công!")
       }
 
       fetchCustomers()
@@ -162,11 +163,22 @@ export default function CustomerManagementPage() {
 
   const filteredCustomers = useMemo(() => {
     return customers.filter(
-      (customer) =>
-        customer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        customer.invitation.toLowerCase().includes(searchTerm.toLowerCase())
+      (customer) => {
+        let check = true
+        if (searchTerm) {
+          check = customer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            customer.invitation.toLowerCase().includes(searchTerm.toLowerCase())
+          if (!check) {
+            return false
+          }
+        }
+        if (searchType) {
+          check = customer.type === searchType
+        }
+        return check
+      }
     )
-  }, [customers, searchTerm])
+  }, [customers, searchTerm, searchType])
 
   const paginatedCustomers = useMemo(() => {
     const startIndex = (currentPage - 1) * itemsPerPage
@@ -176,24 +188,41 @@ export default function CustomerManagementPage() {
   const totalPages = Math.ceil(filteredCustomers.length / itemsPerPage)
 
   return (
-    <div className="p-6">
-      <div className="bg-white rounded-xl shadow-xl p-6 space-y-4">
+    <div className="p-4">
+      <div className="bg-white rounded-xl shadow-xl p-2 space-y-4">
         <div className="flex flex-col md:flex-row justify-between items-center space-y-3 md:space-y-0">
-          <Input
-            type="text"
-            placeholder="Tìm kiếm theo Tên khách hoặc Lời mời..."
-            value={searchTerm}
-            onChange={(e: any) => {
-              setSearchTerm(e.target.value)
-              setCurrentPage(1)
-            }}
-            className="w-full md:w-80"
-          />
+          <div className="flex space-x-2">
+            <Input
+              type="text"
+              placeholder="Tìm kiếm theo Tên khách hoặc Lời mời..."
+              value={searchTerm}
+              onChange={(e: any) => {
+                setSearchTerm(e.target.value)
+                setCurrentPage(1)
+              }}
+              className="w-full md:w-80"
+            />
+            <div className="w-30">
+
+              <Select
+                optionNull={true}
+                label=""
+                name="type"
+                value={searchType}
+                onChange={(e) => {
+                  const value = e.target.value
+                  setSearchType(value)
+                  setCurrentPage(1)
+                }}
+                options={[{ value: "", label: "Tất cả" }, ...CUSTOMER_TYPES,].map((t) => ({ value: t.value, label: t.label }))}
+              />
+            </div>
+          </div>
           <Button
             onClick={handleNewClick}
             className="cursor-pointer bg-blue-600 hover:bg-blue-700 text-white flex items-center"
           >
-            <PlusCircle size={20} className="mr-2" /> Thêm khách hàng mới
+            <PlusCircle size={20} className="mr-2" /> Thêm khách mời
           </Button>
         </div>
 
@@ -201,31 +230,34 @@ export default function CustomerManagementPage() {
           <div className="text-center py-10 text-gray-500">Đang tải dữ liệu...</div>
         ) : (
           <>
-            <Table headers={["Tên khách", "Loại", "Lời mời", "Ngày mời", "Tham dự", "Hành động"]}>
+            <Table headers={["Mã mời", "Tên khách", "Loại", "Tham dự", "Ngày mời", "Âm lịch", "Lời mời", "Hành động"]}>
               {paginatedCustomers.map((customer) => (
                 <tr key={customer.id} className="hover:bg-gray-50 transition-colors">
+                  <td className="p-3 text-sm font-semibold">{customer.id}</td>
                   <td className="p-3 text-sm font-semibold">{customer.name}</td>
-                  <td className="p-3 text-sm">
-                    <span
-                      className={`px-2 py-1 text-xs font-medium rounded-full ${
-                        customer.type === "Groom"
-                          ? "bg-blue-100 text-blue-800"
-                          : customer.type === "Bride"
-                            ? "bg-pink-100 text-pink-800"
-                            : "bg-gray-100 text-gray-800"
+                  <td className={`text-xs font-medium`}>
+                    <div className={`px-2 py-1 ${customer.type === "Groom"
+                      ? "bg-blue-100 text-blue-800"
+                      : customer.type === "Bride"
+                        ? "bg-pink-100 text-pink-800"
+                        : "bg-gray-100 text-gray-800"
                       }`}
                     >
                       {CUSTOMER_TYPES.find((t) => t.value === customer.type)?.label || "N/A"}
-                    </span>
+                    </div>
                   </td>
-                  <td className="p-3 text-sm text-gray-700 truncate max-w-xs">
-                    {customer.invitation}
+
+                  <td className="p-3 text-sm font-bold">
+                    {displayAttendedStatus(customer.attended)}
                   </td>
                   <td className="p-3 text-sm text-gray-700">
                     {formatDateTime(customer.invitedAt)}
                   </td>
-                  <td className="p-3 text-sm font-bold">
-                    {displayAttendedStatus(customer.attended)}
+                  <td className="p-3 text-sm text-gray-700">
+                    {customer.lunarDate}
+                  </td>
+                  <td className="p-3 text-sm text-gray-700 truncate max-w-xs">
+                    {customer.invitation}
                   </td>
                   <td className="flex space-x-2 py-3">
                     <Button
@@ -270,16 +302,15 @@ export default function CustomerManagementPage() {
 
 const CustomerModal = ({ isOpen, onClose, customer, onChange, onSave }: any) => {
   if (!isOpen || !customer) return null
-
   const isNew = !customer.id
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/60 z-50 p-4">
       <div className="bg-white rounded-xl shadow-2xl w-full max-w-3xl max-h-[90vh] flex flex-col">
         {/* HEADER CỐ ĐỊNH */}
-        <div className="flex justify-between items-center p-6 border-b border-gray-200 sticky top-0 bg-white z-10">
+        <div className="flex justify-between items-center p-4 border-b border-gray-200 sticky top-0 bg-white z-10">
           <h2 className="text-2xl font-bold text-gray-800">
-            {isNew ? "Thêm Khách Hàng Mới" : `Chỉnh sửa: ${customer.name}`}
+            {isNew ? "Thêm Khách Mời" : `Chỉnh sửa: ${customer.name}`}
           </h2>
           <button
             onClick={onClose}
@@ -291,11 +322,11 @@ const CustomerModal = ({ isOpen, onClose, customer, onChange, onSave }: any) => 
         </div>
 
         {/* FORM BODY (Scrollable) */}
-        <div className="flex-grow overflow-y-auto p-6">
+        <div className="flex-grow overflow-y-auto p-4">
           <form onSubmit={onSave} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Input
-                label="Tên Khách Hàng *"
+                label="Tên Khách Mời *"
                 name="name"
                 value={customer.name}
                 onChange={onChange}
@@ -316,7 +347,13 @@ const CustomerModal = ({ isOpen, onClose, customer, onChange, onSave }: any) => 
                 value={customer.invitedAt}
                 onChange={onChange}
               />
-
+              <Input
+                label="Âm lịch"
+                name="lunarDate"
+                type="text"
+                value={customer.lunarDate}
+                onChange={onChange}
+              />
               <Select
                 label="Trạng thái tham dự *"
                 name="attended"
@@ -337,7 +374,7 @@ const CustomerModal = ({ isOpen, onClose, customer, onChange, onSave }: any) => 
         </div>
 
         {/* FOOTER CỐ ĐỊNH */}
-        <div className="flex justify-end space-x-3 border-t pt-4 p-6 sticky bottom-0 bg-white z-10">
+        <div className="flex justify-end space-x-3 border-t pt-4 p-4 sticky bottom-0 bg-white z-10">
           <Button
             type="button"
             onClick={onClose}

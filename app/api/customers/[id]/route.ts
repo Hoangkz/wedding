@@ -11,12 +11,12 @@ export async function PUT(req: NextRequest, context: Context) {
       name,
       type,
       invitation,
-      invitedAt, 
-      attended,
+      invitedAt,
+      attended, lunarDate
     } = body
 
-    const updateData: any = { name, type, invitation }
-    
+    const updateData: any = { name, type, invitation, lunarDate }
+
     if (invitedAt) {
       const invitedDate = new Date(invitedAt)
       if (isNaN(invitedDate.getTime())) {
@@ -24,16 +24,16 @@ export async function PUT(req: NextRequest, context: Context) {
       }
       updateData.invitedAt = invitedDate
     }
-    
+
     if (typeof attended === "boolean") {
       updateData.attended = attended
     }
-    
+
     const existingCustomer = await prisma.customer.findUnique({ where: { id } })
     if (!existingCustomer) {
       return NextResponse.json({ error: "Không tìm thấy khách hàng để cập nhật." }, { status: 404 })
     }
-    
+
     const updatedCustomer = await prisma.customer.update({
       where: { id },
       data: updateData,
@@ -60,12 +60,12 @@ export async function DELETE(req: NextRequest, { params }: Context) {
   const { id } = await params
 
   try {
-    
+
     const existingCustomer = await prisma.customer.findUnique({ where: { id } })
     if (!existingCustomer) {
       return NextResponse.json({ error: "Không tìm thấy khách hàng để xóa." }, { status: 404 })
     }
-    
+
     await prisma.customer.delete({
       where: { id },
     })

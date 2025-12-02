@@ -234,20 +234,20 @@ const WishModal = ({ isOpen, onClose, wish, onChange, onSave }: any) => {
         <div className="flex-grow overflow-y-auto p-4">
           <form onSubmit={onSave} className="space-y-4">
             <Input
-              label="Tên Người Gửi (Name) *"
+              label="Tên Người Gửi*"
               name="name"
               value={wish.name || ""}
               onChange={onChange}
             />
             <Input
-              label="ID Khách hàng (Optional)"
+              label="ID Khách hàng"
               name="customerId"
               value={wish.customerId || ""}
               onChange={onChange}
               placeholder="Nhập ID khách hàng nếu có liên kết"
             />
             <TextArea
-              label="Nội dung Lời chúc (Desc) *"
+              label="Nội dung Lời chúc*"
               name="desc"
               value={wish.desc || ""}
               onChange={onChange}

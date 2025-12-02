@@ -76,6 +76,53 @@ class WeddingClient {
   deleteWish(id: string) {
     return this.api.delete(`/api/wishes/${id}/`, {})
   }
+
+  uploadFileBackgroundImage(model: any) {
+    return this.api.post(`/api/background-image`, model)
+  }
+  getTimeline() {
+    return this.api.get("/api/timeline", {})
+  }
+  updateTimeline(id: string, model: any) {
+    return this.api.put(`/api/timeline/${id}`, model)
+  }
+
+  removeFileTimeline(id: string) {
+    return this.api.post(`/api/timeline/${id}`)
+  }
+  createTimeline(model: any) {
+    return this.api.post(`/api/timeline/`, model)
+  }
+  deleteTimeline(id: string) {
+    return this.api.delete(`/api/timeline/${id}/`, {})
+  }
+
+  getSchedule() {
+    return this.api.get("/api/schedule", {})
+  }
+  updateSchedule(id: string, model: any) {
+    return this.api.put(`/api/schedule/${id}`, model)
+  }
+  createSchedule(model: any) {
+    return this.api.post(`/api/schedule/`, model)
+  }
+  deleteSchedule(id: string) {
+    return this.api.delete(`/api/schedule/${id}/`, {})
+  }
+
+  getAlbum() {
+    return this.api.get(`/api/album/`, {})
+  }
+  createFileAlbum(images: string[]) {
+    return this.api.post(`/api/album/`, { images })
+  }
+  deleteFileAlbum(fileName: string) {
+    return this.api.delete(`/api/album?fileName=${fileName}`)
+  }
+
+  getInfor(id: string | undefined) {
+    return this.api.get(`/api/infor${id ? '?id=' + id : ""}`)
+  }
 }
 
 export const appWeddingClient = new WeddingClient()

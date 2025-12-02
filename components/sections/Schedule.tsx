@@ -1,31 +1,31 @@
 "use client"
 import { motion } from "framer-motion"
-import FloatingHearts from "../FloatingIcons"
 import Image from "next/image"
+import FloatingHearts from "../FloatingIcons"
 
-const WeddingEventsPage = () => {
+const WeddingEventsPage = ({ schedules }: { schedules: any[] }) => {
   const events = [
     {
       title: "Lễ Đính Hôn",
       date: "10:00 - 15/11/2025",
-      location: "Nhà gái - TP. Huế",
-      description:
+      address: "Nhà gái - TP. Huế",
+      desc:
         "Buổi lễ đính hôn được tổ chức trong không khí thân mật, ấm cúng cùng sự hiện diện của gia đình hai bên.",
       image: "/engagement.jpg",
     },
     {
       title: "Lễ Thành Hôn",
       date: "08:00 - 30/11/2025",
-      location: "Nhà trai - TP. Hồ Chí Minh",
-      description:
+      address: "Nhà trai - TP. Hồ Chí Minh",
+      desc:
         "Khoảnh khắc thiêng liêng khi cô dâu và chú rể chính thức nên duyên vợ chồng, trước sự chứng kiến của người thân và bạn bè.",
       image: "/wedding.jpg",
     },
     {
       title: "Tiệc Cưới",
       date: "18:00 - 30/11/2025",
-      location: "Trung tâm tiệc cưới White Palace, Q.Phú Nhuận",
-      description:
+      address: "Trung tâm tiệc cưới White Palace, Q.Phú Nhuận",
+      desc:
         "Bữa tiệc tràn ngập niềm vui, âm nhạc và lời chúc phúc dành cho đôi uyên ương trong ngày trọng đại.",
       image: "/party.jpg",
     },
@@ -36,7 +36,7 @@ const WeddingEventsPage = () => {
       id="wedding-events"
       className="relative overflow-hidden"
       style={{
-        backgroundImage: `url('/layout/wedding-events.png')`,
+        backgroundImage: `url('/layout/wedding-events')`,
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
@@ -72,9 +72,9 @@ const WeddingEventsPage = () => {
 
         {/* Danh sách sự kiện */}
         <div className="grid md:grid-cols-3 gap-10 mt-10">
-          {events.map((event, index) => (
+          {schedules && schedules.map((event: any, index: number) => (
             <motion.div
-              key={index}
+              key={event.id}
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: false, amount: 0.3 }}
@@ -94,9 +94,9 @@ const WeddingEventsPage = () => {
               <div className="p-6">
                 <h2 className="text-2xl font-bold text-gray-800 mb-2">{event.title}</h2>
                 <p className="text-pink-600 font-medium mb-1">{event.date}</p>
-                <p className="text-blue-600 italic mb-3">{event.location}</p>
+                <p className="text-blue-600 italic mb-3">{event.address}</p>
                 <p className="text-gray-700 text-sm leading-relaxed text-justify">
-                  {event.description}
+                  {event.desc}
                 </p>
               </div>
             </motion.div>

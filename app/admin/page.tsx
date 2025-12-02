@@ -1,11 +1,10 @@
 "use client"
 
-import { useAdminContext } from "@/hooks/admin.context"
+import { useAdminContext } from "@/context/admin.context"
 import { appWeddingClient } from "@/lib/ApiClient"
 import { toBase64 } from "@/lib/utils"
 import dayjs from "dayjs"
-import Image from "next/image"
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from 'react'
 import { toast } from "react-toastify"
 import { Select } from "./users/page"
 
@@ -40,7 +39,10 @@ export default function DashboardPage() {
     dob: formatDate(user?.dob),
     weddingDate: formatDate(user?.weddingDate),
     weddingTime: user?.weddingTime || "",
+    lunarDate: user?.lunarDate || "",
     qrCodeUrl: user?.qrCodeUrl || "",
+    avatar: user?.avatar || "",
+    avatarFile: null,
     qrCodeFile: null,
     type: user?.type || "Undetermined",
   })
@@ -65,6 +67,9 @@ export default function DashboardPage() {
         dob: formatDate(user?.dob),
         weddingDate: formatDate(user?.weddingDate),
         weddingTime: user?.weddingTime || "",
+        lunarDate: user?.lunarDate || "",
+        avatar: user?.avatar || "",
+        avatarFile: null,
         qrCodeUrl: user?.qrCodeUrl || "",
         qrCodeFile: null,
         type: user?.type || "Undetermined",
@@ -87,6 +92,9 @@ export default function DashboardPage() {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, qrCodeFile: e.target.files?.[0] || null })
   }
+  const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, avatarFile: e.target.files?.[0] })
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -97,14 +105,24 @@ export default function DashboardPage() {
     if (formData.qrCodeFile) {
       try {
         const base64String = await toBase64(formData.qrCodeFile)
-        dataToSend.qrCodeUrl = base64String
+        dataToSend.qrCodeFile = base64String
+        dataToSend.qrCodeUrl = formData.qrCodeFile.name
       } catch {
         toast.error("Chuyển đổi file QR Code thất bại!")
         return
       }
     }
 
-    delete dataToSend.qrCodeFile
+    if (formData.avatarFile) {
+      try {
+        const base64String = await toBase64(formData.avatarFile)
+        dataToSend.avatarFile = base64String
+        dataToSend.avatar = formData.avatarFile.name
+      } catch {
+        toast.error("Chuyển đổi file Avatar thất bại!")
+        return
+      }
+    }
 
     try {
       await appWeddingClient.updateUser(user.id, dataToSend)
@@ -144,7 +162,7 @@ export default function DashboardPage() {
     <div className="p-2 h-full">
       <div className="bg-white rounded-xl shadow-xl space-y-6 flex flex-col h-full min-h-0">
         <form onSubmit={handleSubmit} className="flex flex-col flex-1 min-h-0">
-          <div className="p-6 flex-1 space-y-8 overflow-y-auto">
+          <div className="p-4 flex-1 space-y-8 overflow-y-auto">
             <div className="space-y-4">
               <h3 className="text-lg font-bold text-blue-600 border-b pb-2 mb-4">
                 Thông tin Cơ bản
@@ -153,12 +171,11 @@ export default function DashboardPage() {
                 <Input
                   type="text"
                   name="userName"
-                  label="Username (Tên đăng nhập)"
+                  label="Tên đăng nhập"
                   value={formData.userName}
                   disabled
                   className="bg-gray-100 text-gray-500 cursor-not-allowed"
                 />
-
                 <Input
                   type="text"
                   name="shortName"
@@ -166,7 +183,6 @@ export default function DashboardPage() {
                   value={formData.shortName || ""}
                   onChange={handleChange}
                 />
-
                 <Input
                   type="text"
                   name="name"
@@ -174,7 +190,6 @@ export default function DashboardPage() {
                   value={formData.name || ""}
                   onChange={handleChange}
                 />
-
                 <Input
                   type="date"
                   name="dob"
@@ -182,7 +197,6 @@ export default function DashboardPage() {
                   value={formData.dob || ""}
                   onChange={handleChange}
                 />
-
                 <Input
                   type="text"
                   name="phone"
@@ -207,6 +221,33 @@ export default function DashboardPage() {
                   value={formData.title || ""}
                   onChange={handleChange}
                 />
+                <div className="flex flex-col space-y-1 lg:col-span-1">
+                  <label className="font-semibold text-gray-700 text-sm flex items-center">
+                    Ảnh đại diện
+                  </label>
+                  <div className="flex items-center space-x-4 rounded-lg bg-gray-50 border p-3">
+                    {(formData.avatarFile || formData.avatar) && (
+                      <img
+                        src={
+                          formData.avatarFile
+                            ? URL.createObjectURL(formData.avatarFile)
+                            : formData.avatar
+                        }
+                        alt="Avatar Preview"
+                        className="w-20 h-20 object-cover border-2 border-blue-400 rounded-full shadow-md bg-white"
+                      />
+                    )}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleAvatarChange}
+                      className="block w-full text-sm text-gray-600 file:mr-4
+                        file:py-2 file:px-2 file:cursor-pointer file:flex file:rounded-full file:border-0 
+                        file:text-sm file:font-semibold file:bg-blue-100 file:text-blue-700 
+                        hover:file:bg-blue-200 transition-colors cursor-pointer"
+                    />
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -219,7 +260,7 @@ export default function DashboardPage() {
                 <Input
                   type="text"
                   name="father"
-                  label="Tên Cha"
+                  label="Tên Bố"
                   value={formData.father || ""}
                   onChange={handleChange}
                 />
@@ -235,10 +276,11 @@ export default function DashboardPage() {
 
                 <TextArea
                   name="bio"
-                  label="Tiểu sử/Giới thiệu (Tùy chọn)"
+                  label="Tiểu sử/Giới thiệu"
                   value={formData.bio || ""}
                   onChange={handleChange}
                   className="lg:col-span-2"
+                  rows={5}
                 />
 
                 <TextArea
@@ -246,6 +288,7 @@ export default function DashboardPage() {
                   label="Ghi chú (Note - Tùy chọn)"
                   value={formData.note || ""}
                   onChange={handleChange}
+                  rows={5}
                 />
               </div>
             </div>
@@ -255,32 +298,40 @@ export default function DashboardPage() {
               <h3 className="text-lg font-bold text-blue-600 border-b pb-2 mb-4">
                 Địa điểm & Thời gian Cưới
               </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-2 gap-y-4">
+                <div className="grid grid-cols-2 gap-x-2">
+                  <div className="col-span-1 ">
+                    <Input
+                      type="date"
+                      name="weddingDate"
+                      label="Ngày cưới"
+                      value={formData.weddingDate || ""}
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div className="col-span-1">
+                    <Input
+                      type="time"
+                      name="weddingTime"
+                      label="Giờ làm lễ"
+                      value={formData.weddingTime || ""}
+                      onChange={handleChange}
+                    />
+                  </div>
+                </div>
                 <Input
-                  type="date"
-                  name="weddingDate"
-                  label="Ngày cưới"
-                  value={formData.weddingDate || ""}
+                  type="text"
+                  name="lunarDate"
+                  label="Âm lịch"
+                  value={formData.lunarDate || ""}
                   onChange={handleChange}
                 />
-
-                <Input
-                  type="time"
-                  name="weddingTime"
-                  label="Giờ làm lễ"
-                  value={formData.weddingTime || ""}
-                  onChange={handleChange}
-                />
-
-                <div className="hidden lg:block"></div>
-
                 <Input
                   type="text"
                   name="address"
                   label="Địa chỉ tổ chức"
                   value={formData.address || ""}
                   onChange={handleChange}
-                  className="lg:col-span-2"
                 />
 
                 <Input
@@ -299,60 +350,56 @@ export default function DashboardPage() {
                 Thông tin Ngân hàng & QR Code
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-4">
-                <Input
-                  type="text"
-                  name="bank"
-                  label="Tên Ngân hàng"
-                  value={formData.bank || ""}
-                  onChange={handleChange}
-                />
+                <div className="lg:col-span-2">
+                  <Input
+                    type="text"
+                    name="bank"
+                    label="Tên Ngân hàng"
+                    value={formData.bank || ""}
+                    onChange={handleChange}
+                  />
 
-                <Input
-                  type="text"
-                  name="account"
-                  label="Số tài khoản"
-                  value={formData.account || ""}
-                  onChange={handleChange}
-                />
+                  <Input
+                    type="text"
+                    name="account"
+                    label="Số tài khoản"
+                    value={formData.account || ""}
+                    onChange={handleChange}
+                  />
+                </div>
 
-                {/* QR Code Upload Section */}
-                <div className="flex flex-col space-y-2 lg:col-span-3 border p-3 rounded-lg bg-gray-50">
+                <div className="flex flex-col space-y-1 lg:col-span-1">
                   <label className="font-semibold text-gray-700 text-sm flex items-center">
                     QR Code Chuyển khoản (Ảnh)
                   </label>
-                  <div className="flex items-center space-x-4">
+                  <div className="flex items-center space-x-4 rounded-lg bg-gray-50 border p-3">
                     {(formData.qrCodeFile || formData.qrCodeUrl) && (
-                      <Image
-                        width={64}
-                        height={64}
+                      <img
                         src={
                           formData.qrCodeFile
                             ? URL.createObjectURL(formData.qrCodeFile)
                             : formData.qrCodeUrl
                         }
                         alt="QR Code Preview"
-                        className="w-16 h-16 object-contain border-2 border-green-400 rounded-lg shadow-md bg-white p-1"
+                        className="w-20 h-20 object-contain border-2 border-green-400 rounded-lg shadow-md bg-white p-1"
                       />
                     )}
                     <input
                       type="file"
                       accept="image/*"
                       onChange={handleFileChange}
-                      className="block w-full text-sm text-gray-600 file:mr-4 
-                                            file:py-2 file:px-4 file:rounded-full file:border-0 
-                                            file:text-sm file:font-semibold file:bg-blue-100 file:text-blue-700 
-                                            hover:file:bg-blue-200 transition-colors cursor-pointer"
+                      className="block w-full text-sm text-gray-600 file:mr-4
+                        file:py-2 file:px-2 file:cursor-pointer file:flex file:rounded-full file:border-0 
+                        file:text-sm file:font-semibold file:bg-blue-100 file:text-blue-700 
+                        hover:file:bg-blue-200 transition-colors cursor-pointer"
                     />
                   </div>
-                  <p className="text-xs text-gray-500 mt-1">
-                    Tải lên ảnh QR Code ngân hàng của bạn. Dung lượng tối đa: 1MB.
-                  </p>
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="bg-white flex-shrink-0 flex p-6 justify-between items-center border-t border-gray-100">
+          <div className="bg-white flex-shrink-0 flex p-2 justify-between items-center border-t border-gray-100">
             <button
               type="submit"
               className="cursor-pointer bg-blue-600 text-white px-3 py-2 rounded-xl 
@@ -377,7 +424,7 @@ export default function DashboardPage() {
       {/* Modal đổi mật khẩu (Giữ nguyên) */}
       {showPasswordModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-black/60 z-50 transition-opacity duration-300 backdrop-blur-sm p-4">
-          <div className="bg-white p-6 rounded-2xl shadow-2xl w-full max-w-sm transform scale-100 transition-transform duration-300">
+          <div className="bg-white p-4 rounded-2xl shadow-2xl w-full max-w-sm transform scale-100 transition-transform duration-300">
             <h2 className="text-2xl font-bold mb-5 text-center text-gray-800 border-b pb-2">
               Đổi mật khẩu
             </h2>
@@ -415,14 +462,14 @@ export default function DashboardPage() {
               <div className="flex justify-end gap-3 mt-4">
                 <button
                   type="button"
-                  className="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition text-sm font-medium"
+                  className="cursor-pointer bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition text-sm font-medium"
                   onClick={() => setShowPasswordModal(false)}
                 >
                   Hủy
                 </button>
                 <button
                   type="submit"
-                  className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition text-sm font-medium shadow-md"
+                  className="cursor-pointer bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition text-sm font-medium shadow-md"
                 >
                   Xác nhận đổi
                 </button>
@@ -449,7 +496,7 @@ const Input = ({
   placeholder = "",
   required,
 }: any) => (
-  <div className="flex flex-col space-y-1">
+  <div className={`flex flex-col space-y-1 ` + className}>
     {label && (
       <label htmlFor={name} className="font-semibold text-gray-700 text-sm">
         {label}
@@ -469,7 +516,7 @@ const Input = ({
   </div>
 )
 
-const TextArea = ({ label, name, value, onChange, className = "", placeholder = "" }: any) => (
+const TextArea = ({ rows = 4, label, name, value, onChange, className = "", placeholder = "" }: any) => (
   <div className={`flex flex-col space-y-1 ${className}`}>
     <label htmlFor={name} className="font-semibold text-gray-700 text-sm">
       {label}
@@ -480,7 +527,7 @@ const TextArea = ({ label, name, value, onChange, className = "", placeholder = 
       placeholder={placeholder || label}
       value={value}
       onChange={onChange}
-      rows={2}
+      rows={rows}
       className={`${baseInputClass} resize-none`}
     />
   </div>

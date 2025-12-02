@@ -56,8 +56,8 @@ const SendIcon = () => (
 type Wish = {
   id: number
   name: string
-  message: string
-  timestamp: string
+  desc: string
+  updatedAt: string
 }
 
 const getMockTime = () => {
@@ -72,64 +72,16 @@ const getMockTime = () => {
   })
 }
 
-const WeddingWishes = () => {
-  const initialWishes: Wish[] = [
-
-    {
-      id: 1,
-      name: "Gia đình Cô Ba",
-      message: "Chúc hai cháu trăm năm hạnh phúc, sớm có quý tử, công chúa nhé!",
-      timestamp: "01/01 10:30",
-    },
-    {
-      id: 2,
-      name: "Bạn thân Tùng",
-      message:
-        "Đã lâu lắm rồi, cuối cùng ngày này cũng đến! Chúc mừng hạnh phúc của hai người, mãi mãi bên nhau nhé!",
-      timestamp: "01/01 10:25",
-    },
-    {
-      id: 3,
-      name: "Đồng nghiệp A",
-      message: "Chúc mừng cặp đôi hoàn hảo! Chúc hai bạn luôn ngập tràn tiếng cười và niềm vui.",
-      timestamp: "01/01 10:20",
-    },
-    {
-      id: 4,
-      name: "Chị họ Mai",
-      message: "Hạnh phúc viên mãn, mãi mãi bên nhau! Yêu thương hai em!",
-      timestamp: "01/01 10:15",
-    },
-    {
-      id: 5,
-      name: "Hàng xóm B",
-      message: "Chúc hai con có một cuộc sống hôn nhân ngọt ngào và bền chặt.",
-      timestamp: "01/01 10:10",
-    },
-
-    {
-      id: 6,
-      name: "Bác Tư",
-      message: "Vạn sự như ý, tỷ sự như mơ, chúc mừng hai đứa nhé!",
-      timestamp: "01/01 10:05",
-    },
-    {
-      id: 7,
-      name: "Bạn cấp 3",
-      message: "Tình yêu tuyệt vời! Chúc hai bạn luôn là chỗ dựa vững chắc cho nhau.",
-      timestamp: "01/01 10:00",
-    },
-  ]
-
-  const [wishes, setWishes] = useState<Wish[]>(initialWishes)
+const WeddingWishes = ({ initialWishes }: { initialWishes: any[] }) => {
+  const [wishes, setWishes] = useState<Wish[]>(initialWishes || [])
   const [name, setName] = useState("")
-  const [message, setMessage] = useState("")
+  const [desc, setdesc] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState<string | null>(null)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!name.trim() || !message.trim()) {
+    if (!name.trim() || !desc.trim()) {
       setSubmitError("Vui lòng điền đầy đủ Tên và Lời chúc.")
       return
     }
@@ -143,13 +95,13 @@ const WeddingWishes = () => {
       const newWish: Wish = {
         id: Date.now(),
         name: name.trim(),
-        message: message.trim(),
-        timestamp: getMockTime(),
+        desc: desc.trim(),
+        updatedAt: getMockTime(),
       }
 
       setWishes([newWish, ...wishes])
       setName("")
-      setMessage("")
+      setdesc("")
     } catch {
       setSubmitError("Gửi lời chúc thất bại. Vui lòng thử lại sau.")
     } finally {
@@ -176,7 +128,7 @@ const WeddingWishes = () => {
       id="wishes"
       className="relative overflow-hidden"
       style={{
-        backgroundImage: `url('/layout/wishes.png')`,
+        backgroundImage: `url('/layout/wishes')`,
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
@@ -246,9 +198,9 @@ const WeddingWishes = () => {
               </div>
               <textarea
                 placeholder="Lời chúc chân thành nhất..."
-                value={message}
+                value={desc}
                 onChange={(e) => {
-                  setMessage(e.target.value)
+                  setdesc(e.target.value)
                   setSubmitError(null)
                 }}
                 disabled={isSubmitting}
@@ -272,8 +224,8 @@ const WeddingWishes = () => {
               type="submit"
               disabled={isSubmitting}
               className={`w-full text-white font-bold text-base py-2.5 rounded-full shadow-lg transition duration-300 transform flex items-center justify-center ${isSubmitting
-                  ? "bg-gray-400 cursor-not-allowed"
-                  : "bg-gradient-to-r from-rose-500 to-pink-600 hover:shadow-pink-400/50 hover:scale-[1.02]"
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-gradient-to-r from-rose-500 to-pink-600 hover:shadow-pink-400/50 hover:scale-[1.02]"
                 }`}
             >
               {isSubmitting ? (
@@ -290,7 +242,7 @@ const WeddingWishes = () => {
             {/* Container giới hạn chiều cao và cuộn */}
             <div className="max-h-[60vh] lg:max-h-[70vh] overflow-y-auto pr-2 custom-scrollbar">
               <AnimatePresence>
-                {wishes.length === 0 && (
+                {wishes && wishes.length === 0 && (
                   <motion.p
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
@@ -312,14 +264,14 @@ const WeddingWishes = () => {
                                         backdrop-blur-sm transition duration-300 hover:shadow-xl hover:scale-[1.005] flex flex-col"
                   >
                     <p className="text-gray-800 text-base italic mb-3 leading-relaxed">
-                      &ldquo;{wish.message}&rdquo;
+                      &ldquo;{wish.desc}&rdquo;
                     </p>
 
                     <div className="flex justify-between items-center border-t border-pink-100 pt-2 mt-auto">
                       <p className="text-pink-600 font-bold text-sm tracking-wider">
                         — {wish.name}
                       </p>
-                      <p className="text-stone-400 text-xs italic">{wish.timestamp}</p>
+                      <p className="text-stone-400 text-xs italic">{wish.updatedAt}</p>
                     </div>
                   </motion.div>
                 ))}

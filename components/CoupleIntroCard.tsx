@@ -1,6 +1,5 @@
 "use client"
 import { motion } from "framer-motion"
-import Image from "next/image"
 import React from "react"
 
 type CoupleIntroCardProps = {
@@ -30,9 +29,12 @@ const CoupleIntroCard: React.FC<CoupleIntroCardProps> = ({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: false, amount: 0.1 }}
       transition={{ duration: 1.2, ease: "easeOut" }}
-      className={`m-0 relative w-full max-w-sm md:max-w-md lg:w-1/2 p-6 rounded-3xl shadow-2xl backdrop-blur-md bg-white/10 border border-white/30`}
-    >
-
+      className={`m-4 relative 
+        w-full 
+        max-w-sm sm:max-w-md 
+        lg:w-[44%]
+        p-6 rounded-3xl shadow-2xl backdrop-blur-md bg-white/10 border border-white/30 
+        flex-shrink-0`}    >
       <div
         className={`absolute inset-0 rounded-3xl bg-gradient-to-br ${accentColor} opacity-30 blur-xl`}
       ></div>
@@ -52,13 +54,13 @@ const CoupleIntroCard: React.FC<CoupleIntroCardProps> = ({
           transition={{ duration: 1, ease: "easeOut" }}
           className="mx-auto w-44 h-44 md:w-52 md:h-52 rounded-full overflow-hidden border-[6px] border-white shadow-[0_0_25px_rgba(0,0,0,0.15)] mb-6 relative"
         >
-          <Image
+          {imageSrc && <img
             src={imageSrc}
             alt={name}
-            fill
             className="object-cover"
-            sizes="(max-width: 768px) 100vw, 33vw"
+          // sizes="(max-width: 768px) 100vw, 33vw"
           />
+          }
           <div className="absolute inset-0 rounded-full ring-2 ring-white/70 ring-offset-4 ring-offset-transparent"></div>
         </motion.div>
 

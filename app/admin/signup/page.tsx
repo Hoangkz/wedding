@@ -43,7 +43,7 @@ export default function SignupPage() {
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
       <form
         onSubmit={handleSubmit}
-        className="bg-white p-6 rounded shadow-md w-[350px] flex flex-col gap-3"
+        className="bg-white p-4 rounded shadow-md w-[350px] flex flex-col gap-3"
       >
         <h2 className="text-xl font-bold text-center mb-4">Tạo Tài Khoản</h2>
 

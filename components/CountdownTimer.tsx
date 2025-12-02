@@ -1,13 +1,15 @@
 "use client"
+import dayjs from "dayjs"
 import { useEffect, useState } from "react"
 
-const TARGET_DATE = new Date("2025-11-21T10:00:00").getTime()
+// const TARGET_DATE = new Date("2025-11-21T10:00:00").getTime()
 
-const calculateTimeLeft = () => {
-  const now = new Date().getTime()
-  const distance = TARGET_DATE - now
+const calculateTimeLeft = (weddingDate: string) => {
+  const date = dayjs(weddingDate)
+  const now = dayjs()
+  const distance = date.diff(now) // milliseconds
 
-  if (distance < 0) {
+  if (distance <= 0) {
     return {
       days: 0,
       hours: 0,
@@ -17,15 +19,17 @@ const calculateTimeLeft = () => {
     }
   }
 
-  const days = Math.floor(distance / (1000 * 60 * 60 * 24))
-  const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
-  const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))
-  const seconds = Math.floor((distance % (1000 * 60)) / 1000)
+  const days = date.diff(now, "day")
+  const hours = date.diff(now.add(days, "day"), "hour")
+  const minutes = date.diff(now.add(days, "day").add(hours, "hour"), "minute")
+  const seconds = date.diff(
+    now.add(days, "day").add(hours, "hour").add(minutes, "minute"),
+    "second"
+  )
 
   return { days, hours, minutes, seconds, isOver: false }
 }
-
-const CountdownTimer = () => {
+const CountdownTimer = ({ weddingDate }: { weddingDate: string }) => {
   const [isClient, setIsClient] = useState(false)
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
@@ -43,11 +47,11 @@ const CountdownTimer = () => {
     if (!isClient) return
 
     const timer = setInterval(() => {
-      setTimeLeft(calculateTimeLeft())
+      setTimeLeft(calculateTimeLeft(weddingDate))
     }, 1000)
 
     return () => clearInterval(timer)
-  }, [isClient])
+  }, [isClient, weddingDate])
 
   if (!isClient) {
     return (

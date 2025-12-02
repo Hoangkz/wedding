@@ -5,24 +5,24 @@ import CoupleIntroCard from "../CoupleIntroCard"
 import FloatingHearts from "../FloatingIcons"
 import { Heart1 } from "../Heart"
 
-const IntroPage = () => {
-  const brideData = {
-    type: "bride",
-    name: "Ngô Việt Hoài",
-    imageSrc: "/layout/codau.jpeg",
-    fatherName: "NGÔ XUÂN NGHĨA",
-    motherName: "TRẦN HỒNG THẮM",
-    bio: "Cô gái đến từ Xứ Huế mộng mơ, hiện đang sinh sống và làm việc tại Sài Gòn. Sau khi tốt nghiệp Học viện Báo chí và Tuyên truyền, quyết tâm theo đuổi đam mê làm phóng viên du lịch. Là người hay cười nhưng lại sống nội tâm, thích đọc sách, trồng cây và yêu thiên nhiên. Ngoài ra còn rất thích về với vôi, nuôi mèo và nuôi ước mơ cho cô một vườn trong khỏe sắc.",
-  }
+const IntroPage = ({ brideData, groomData }: any) => {
+  // const brideData = {
+  //   type: "bride",
+  //   name: "Ngô Việt Hoài",
+  //   imageSrc: "/layout/codau.jpeg",
+  //   fatherName: "NGÔ XUÂN NGHĨA",
+  //   motherName: "TRẦN HỒNG THẮM",
+  //   bio: "Cô gái đến từ Xứ Huế mộng mơ, hiện đang sinh sống và làm việc tại Sài Gòn. Sau khi tốt nghiệp Học viện Báo chí và Tuyên truyền, quyết tâm theo đuổi đam mê làm phóng viên du lịch. Là người hay cười nhưng lại sống nội tâm, thích đọc sách, trồng cây và yêu thiên nhiên. Ngoài ra còn rất thích về với vôi, nuôi mèo và nuôi ước mơ cho cô một vườn trong khỏe sắc.",
+  // }
 
-  const groomData = {
-    type: "groom",
-    name: "Hoàng Kiến Văn",
-    imageSrc: "/layout/chure.jpeg",
-    fatherName: "HOÀNG ANH KIỆT",
-    motherName: "NGUYỄN THỊ HOÀI",
-    bio: 'Là bác sĩ nha khoa hiện đang công tác tại một phòng khám nha khoa ở Quận 1 thành phố Hồ Chí Minh. Là một người hiền lành và ít nói. Luôn coi trọng tình cảm và yêu thương gia đình. Với anh: "Gia đình là điểm tựa vững chắc nhất và là bến đỗ bình yên không đâu sánh bằng đối với mỗi con người. Đôi luông là nơi tràn ngập sinh yêu thương để ta trở về."',
-  }
+  // const groomData = {
+  //   type: "groom",
+  //   name: "Hoàng Kiến Văn",
+  //   imageSrc: "/layout/chure.jpeg",
+  //   fatherName: "HOÀNG ANH KIỆT",
+  //   motherName: "NGUYỄN THỊ HOÀI",
+  //   bio: 'Là bác sĩ nha khoa hiện đang công tác tại một phòng khám nha khoa ở Quận 1 thành phố Hồ Chí Minh. Là một người hiền lành và ít nói. Luôn coi trọng tình cảm và yêu thương gia đình. Với anh: "Gia đình là điểm tựa vững chắc nhất và là bến đỗ bình yên không đâu sánh bằng đối với mỗi con người. Đôi luông là nơi tràn ngập sinh yêu thương để ta trở về."',
+  // }
 
   return (
     <section id="couple" className="relative overflow-hidden">
@@ -30,17 +30,16 @@ const IntroPage = () => {
       {/* --- Nền và nội dung chính --- */}
       <div
         style={{
-          backgroundImage: `url('/2.jpg')`,
+          backgroundImage: `url('/layout/couple')`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
       >
         <div
-          className="min-h-screen py-30 relative flex flex-col items-center justify-center"
+          className="w-full min-h-screen py-30 relative flex flex-col items-center justify-center"
           style={{ backgroundColor: "rgba(255,255,255,0.6)" }}
         >
-          <div className="relative z-20 text-center px-4">
-            {/* --- Tiêu đề --- */}
+          <div className="w-full relative z-20 text-center px-4">
             <motion.div
               className="flex justify-center items-center "
               initial={{ opacity: 0, y: -30 }}
@@ -72,7 +71,6 @@ const IntroPage = () => {
               </h1>
             </motion.div>
 
-            {/* --- Tim động --- */}
             <motion.div
               initial={{ scale: 0 }}
               whileInView={{ scale: 1 }}
@@ -81,9 +79,7 @@ const IntroPage = () => {
             >
               <Heart1 />
             </motion.div>
-
-            {/* --- Hai card --- */}
-            <div className="flex justify-around lg:justify-center items-stretch lg:space-x-8 space-y-8 lg:space-y-0 flex-wrap mt-10 relative z-20">
+            <div className="w-full flex justify-center items-stretch flex-wrap relative z-20">
               <CoupleIntroCard {...brideData} />
               <CoupleIntroCard {...groomData} />
             </div>
