@@ -128,7 +128,7 @@ const Header: React.FC = () => {
 
             <nav className="hidden md:block">
               {/* Giữ nguyên baseIdPath theo yêu cầu của bạn */}
-              <DesktopNav baseIdPath="1" />
+              <DesktopNav baseIdPath={""} />
             </nav>
 
             <div className="md:hidden">
@@ -156,8 +156,8 @@ const Header: React.FC = () => {
                     href={item.href}
                     scroll={false}
                     className={`block px-3 py-2 rounded-md text-base font-medium transition-colors ${item.href === active
-                        ? "text-[#e32b42] font-bold bg-pink-50"
-                        : "text-gray-900 hover:bg-gray-100 hover:text-[#e32b42]"
+                      ? "text-[#e32b42] font-bold bg-pink-50"
+                      : "text-gray-900 hover:bg-gray-100 hover:text-[#e32b42]"
                       }`}
                     onClick={() => handleLinkClick(item.href)}
                   >

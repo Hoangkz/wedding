@@ -54,15 +54,15 @@ export const dataLocal = {
   "timeLine": [
     {
       "id": "mtscU4rsPSARQFAJRx5MN",
-      "title": "Buổi Hẹn Hò Đầu Tiên",
-      "desc": "Chúng mình có buổi hẹn hò đầu tiên tại Hồ Tây – một buổi tối nhẹ nhàng với ly cà phê, làn gió mát và khung cảnh bình yên bên hồ. Giữa không gian ấy, những câu chuyện bắt đầu được sẻ chia, những nụ cười trở nên tự nhiên hơn.\nCó lẽ đó là khoảnh khắc rất bình thường của cuộc sống, nhưng với chúng mình lại là một kỷ niệm đặc biệt. Bởi từ buổi tối hôm ấy, hai trái tim đã bắt đầu rung động và một câu chuyện tình yêu cũng lặng lẽ bắt đầu 💖",
+      "title": "Cuộc Trò Chuyện Định Mệnh",
+      "desc": "Mình biết Liên từ hồi cấp 3, nhưng khi ấy chỉ là một cái tên thoáng qua, chưa từng có cơ hội trò chuyện. Đến năm cuối đại học, tình cờ thấy một bức ảnh của Liên, tim mình bỗng xao xuyến lạ. Từ hôm đó, mình cứ vô thức mở Facebook của cô ấy lên xem, rồi quyết định lấy hết can đảm để bắt chuyện.",
       "image": null,
       "index": 1
     },
     {
       "id": "ejQVJCaa-HY085RuwKchj",
-      "title": "Cầu Hôn",
-      "desc": "Trong một buổi tối lãng mạn tại một nhà hàng bên Hồ Tây, mình đã âm thầm chuẩn bị một điều thật đặc biệt. Một bàn tiệc ấm cúng, một chiếc nhẫn được giấu kín và một kế hoạch nhỏ để tạo nên bất ngờ cho cô ấy.\n\nKhi khoảnh khắc ấy đến, mình trao chiếc nhẫn và ngỏ lời từ tận trái tim. Cô ấy đã vô cùng bất ngờ, và trong ánh mắt hạnh phúc ấy, lời đồng ý đã khiến mọi thứ trở nên thật trọn vẹn.\nNgay giây phút đó, mình biết rằng mình đã tìm được người để cùng nắm tay đi hết hành trình cuộc đời – người mà mình muốn cùng chia sẻ mọi niềm vui, cùng vượt qua mọi thử thách và cùng xây dựng một mái ấm hạnh phúc.\nKhoảnh khắc ấy đã trở thành một kỷ niệm không thể quên, khi tình yêu được nói thành lời và chúng mình biết rằng mình đã chọn đúng người để ở bên nhau trọn đời. ✨💖",
+      "title": "Hẹn ước trọn đời",
+      "desc": "Từ những rung động đầu tiên đến khoảnh khắc vui buồn trong hơn 4 năm qua, mình hiểu rằng cô ấy không chỉ là người để yêu, mà là người để cùng đi hết chặng đường dài phía trước. Mình hứa sẽ trân trọng từng điều nhỏ bé, giữ trọn sự chung thủy và cùng cô ấy xây dựng một mái ấm đầy yêu thương. Với cô ấy, đó không chỉ là lời tỏ tình – mà là một hẹn ước trọn đời. ❤️ ✨",
       "image": null,
       "index": 3
     },
