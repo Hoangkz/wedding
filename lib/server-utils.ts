@@ -61,15 +61,15 @@ export const dataLocal = {
     },
     {
       "id": "ejQVJCaa-HY085RuwKchj",
-      "title": "Hẹn ước trọn đời",
-      "desc": "Từ những rung động đầu tiên đến khoảnh khắc vui buồn trong hơn 4 năm qua, mình hiểu rằng cô ấy không chỉ là người để yêu, mà là người để cùng đi hết chặng đường dài phía trước. Mình hứa sẽ trân trọng từng điều nhỏ bé, giữ trọn sự chung thủy và cùng cô ấy xây dựng một mái ấm đầy yêu thương. Với cô ấy, đó không chỉ là lời tỏ tình – mà là một hẹn ước trọn đời. ❤️ ✨",
+      "title": "Lần Gặp Mặt Đầu",
+      "desc": "Chúng mình hẹn gặp nhau lần đầu ở Hồ Tây. Mình hồi hộp đến mức chuẩn bị sẵn trong đầu từng câu sẽ nói, chỉ sợ im lặng giữa hai người. Nhưng khi gặp rồi, mọi thứ lại tự nhiên đến lạ. Liên ngoài đời xinh và dịu dàng hơn mình tưởng, cách cô ấy nói chuyện nhẹ nhàng, vừa vặn với mình đến khó tin. Rồi buổi chiều hôm đó, mình biết chắc một điều – quyết định bước đến và bắt chuyện với cô ấy là điều đúng đắn",
       "image": null,
       "index": 3
     },
     {
       "id": "9wCSuRq01pNV7INBRfU4e",
-      "title": "Ngày Dạm Ngõ",
-      "desc": "Ngày dạm ngõ là khoảnh khắc đặc biệt khi hai gia đình chính thức gặp gỡ và mở lời cho chuyện trăm năm của chúng mình. Trong không khí ấm áp và chân thành ấy, mình cảm thấy rất bồi hồi – vừa xúc động, vừa hạnh phúc khi tình yêu của chúng mình nhận được sự chúc phúc từ hai bên gia đình.\nĐó không chỉ là một nghi thức truyền thống, mà còn là dấu mốc ý nghĩa khi hai gia đình bắt đầu gắn kết, cùng chứng kiến và ủng hộ cho hành trình mới của chúng mình – hành trình hướng tới một mái ấm hạnh phúc 💖🌿",
+      "title": "Hẹn ước trọn đời",
+      "desc": "Từ những rung động đầu tiên đến khoảnh khắc vui buồn trong hơn 4 năm qua, mình hiểu rằng cô ấy không chỉ là người để yêu, mà là người để cùng đi hết chặng đường dài phía trước. Mình hứa sẽ trân trọng từng điều nhỏ bé, giữ trọn sự chung thủy và cùng cô ấy xây dựng một mái ấm đầy yêu thương. Với cô ấy, đó không chỉ là lời tỏ tình – mà là một hẹn ước trọn đời. ❤️ ✨",
       "image": null,
       "index": 4
     }
