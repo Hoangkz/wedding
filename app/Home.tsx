@@ -55,12 +55,14 @@ export default function Home() {
                 setAddress({
                     groom: {
                         name: users.groom.name,
+                        shortName: users.groom.shortName,
                         address: users.groom.address,
                         mapUrl: users.groom.mapUrl,
                         embedUrl: users.groom.embedUrl
                     },
                     bride: {
                         name: users.bride.name,
+                        shortName: users.bride.shortName,
                         address: users.bride.address,
                         mapUrl: users.bride.mapUrl,
                         embedUrl: users.bride.embedUrl
