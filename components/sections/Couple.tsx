@@ -1,9 +1,9 @@
-"use client"
-import { motion } from "framer-motion"
+"use client";
+import { motion } from "framer-motion";
 
-import CoupleIntroCard from "../CoupleIntroCard"
-import FloatingHearts from "../FloatingIcons"
-import { Heart1 } from "../Heart"
+import CoupleIntroCard from "../CoupleIntroCard";
+import FloatingHearts from "../FloatingIcons";
+import { Heart1 } from "../Heart";
 
 const IntroPage = ({ brideData, groomData }: any) => {
   // const brideData = {
@@ -46,27 +46,18 @@ const IntroPage = ({ brideData, groomData }: any) => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 1 }}
             >
-              <h1
-                className="test text-center font-bold bg-gradient-to-r 
-                        from-pink-400 via-rose-400 to-amber-300 bg-clip-text text-transparent drop-shadow-lg"
-                style={{ fontSize: 55 }}
-              >
+              <h1 className="test text-center font-bold" style={{ fontSize: 55, color: "#DC143C" }}>
                 Cô dâu
               </h1>
               <motion.h1
-                className="test text-center mx-4 sm:mx-12 font-bold bg-gradient-to-r 
-                        from-pink-400 via-rose-400 to-amber-300 bg-clip-text text-transparent drop-shadow-lg"
-                style={{ fontSize: 55 }}
+                className="test text-center mx-4 sm:mx-12 font-bold"
+                style={{ fontSize: 55, color: "#DC143C" }}
                 animate={{ scale: [1, 1.3, 1] }}
                 transition={{ repeat: Infinity, duration: 2 }}
               >
                 &
               </motion.h1>
-              <h1
-                className="test text-center font-bold bg-gradient-to-r 
-                        from-pink-400 via-rose-400 to-amber-300 bg-clip-text text-transparent drop-shadow-lg"
-                style={{ fontSize: 55 }}
-              >
+              <h1 className="test text-center font-bold" style={{ fontSize: 55, color: "#DC143C" }}>
                 Chú rể
               </h1>
             </motion.div>
@@ -87,7 +78,7 @@ const IntroPage = ({ brideData, groomData }: any) => {
         </div>
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default IntroPage
+export default IntroPage;

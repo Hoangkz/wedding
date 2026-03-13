@@ -1,9 +1,9 @@
-"use client"
-import { motion } from "framer-motion"
-import Image from "next/image"
-import FloatingHearts from "../FloatingIcons"
+"use client";
+import { motion } from "framer-motion";
+import Image from "next/image";
+import FloatingHearts from "../FloatingIcons";
 
-const QrCard = ({ data = {}, delay = 0 }: { data: any, delay: number }) => {
+const QrCard = ({ data = {}, delay = 0 }: { data: any; delay: number }) => {
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.8 }}
@@ -11,7 +11,6 @@ const QrCard = ({ data = {}, delay = 0 }: { data: any, delay: number }) => {
       transition={{ duration: 0.2, delay: delay, type: "spring", stiffness: 80 }}
       className="w-full max-w-[300] w-[80%] p-5 bg-white/95 rounded-3xl shadow-2xl border-t-8 border-pink-500 backdrop-blur-sm transition duration-500 hover:shadow-pink-400/50 hover:scale-[1.01]"
     >
-
       <h3
         className={`text-2xl font-['Playfair_Display'] font-bold mb-3 ${data?.title === "Nhà Trai" ? "text-indigo-600" : "text-rose-600"}`}
       >
@@ -53,8 +52,8 @@ const QrCard = ({ data = {}, delay = 0 }: { data: any, delay: number }) => {
         {data.note}
       </p>
     </motion.div>
-  )
-}
+  );
+};
 
 const WeddingGift = ({ weddingGift = {} }: { weddingGift: any }) => {
   return (
@@ -67,19 +66,17 @@ const WeddingGift = ({ weddingGift = {} }: { weddingGift: any }) => {
         backgroundPosition: "center",
       }}
     >
-
       <FloatingHearts count={30} icons={["💰", "🎁", "💖", "✨"]} />
 
       <div className="absolute inset-0 bg-white/60 backdrop-blur-sm"></div>
 
       <div className="relative z-10 py-30 px-6 md:px-12 text-center">
-
         <motion.h1
           initial={{ opacity: 0, y: -40 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
-          className=" test text-5xl md:text-6xl font-bold bg-gradient-to-r 
-                        from-pink-400 via-rose-400 to-amber-300 bg-clip-text text-transparent drop-shadow-lg"
+          className=" test text-5xl md:text-6xl font-bold"
+          style={{ color: "#DC143C" }}
         >
           Mừng Cưới
         </motion.h1>
@@ -93,7 +90,6 @@ const WeddingGift = ({ weddingGift = {} }: { weddingGift: any }) => {
         </motion.p>
 
         <div className="flex flex-wrap gap-10 justify-center items-center mb-4 ">
-
           <QrCard data={weddingGift.bride} delay={0.3} />
 
           <QrCard data={weddingGift.groom} delay={0.4} />
@@ -106,12 +102,15 @@ const WeddingGift = ({ weddingGift = {} }: { weddingGift: any }) => {
           viewport={{ once: true }}
           className="text-gray-700 max-w-2xl mx-auto p-4 bg-white/70 rounded-xl shadow-inner italic text-base"
         >
-          <span className="font-bold text-pink-600">Lưu ý:</span> Quý vị vui lòng điền nội dung
-          chuyển khoản là &quot;Tên của Quý vị&quot; để cô dâu chú rể tiện gửi lời cảm ơn.
+          <span className="font-bold" style={{ color: "#DC143C" }}>
+            Lưu ý:
+          </span>{" "}
+          Quý vị vui lòng điền nội dung chuyển khoản là &quot;Tên của Quý vị&quot; để cô dâu chú rể
+          tiện gửi lời cảm ơn.
         </motion.p>
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default WeddingGift
+export default WeddingGift;

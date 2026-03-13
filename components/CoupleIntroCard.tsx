@@ -34,16 +34,17 @@ const CoupleIntroCard: React.FC<CoupleIntroCardProps> = ({
         w-full 
         max-w-sm sm:max-w-md 
         lg:w-[44%]
-        p-6 rounded-3xl shadow-2xl backdrop-blur-md bg-white/10 border border-white/30 
+        p-6 rounded-3xl shadow-2xl bg-white border border-gray-200 
         flex-shrink-0`}    >
       <div
-        className={`absolute inset-0 rounded-3xl bg-gradient-to-br ${accentColor} opacity-30 blur-xl`}
+        className={`absolute inset-0 rounded-3xl bg-gradient-to-br ${accentColor} opacity-0 blur-xl`}
       ></div>
 
       <div className="relative z-10 text-center text-gray-800">
 
         <h2
-          className={`text-lg md:text-xl font-semibold tracking-widest uppercase mb-4 text-transparent bg-clip-text bg-gradient-to-r ${accentColor}`}
+          className={`text-lg md:text-xl font-semibold tracking-widest uppercase mb-4`}
+          style={{ color: "#DC143C" }}
         >
           {title}
         </h2>
@@ -73,7 +74,7 @@ const CoupleIntroCard: React.FC<CoupleIntroCardProps> = ({
           viewport={{ once: false, amount: 0.2 }}
           transition={{ delay: 0.2, duration: 1 }}
           className="test  text-4xl md:text-5xl font-bold mb-4"
-          style={{ color: "azure" }}
+          style={{ color: "#DC143C" }}
         >
           {name}
         </motion.h1>
@@ -83,7 +84,7 @@ const CoupleIntroCard: React.FC<CoupleIntroCardProps> = ({
           whileInView={{ opacity: 1 }}
           viewport={{ once: false, amount: 0.3 }}
           transition={{ delay: 0.3, duration: 1 }}
-          className="text-sm md:text-base text-gray-700 mb-4 leading-relaxed"
+          className="text-sm md:text-base text-gray-800 mb-4 leading-relaxed"
         >
           <p>
             Ông: <strong className="font-medium">{fatherName}</strong>
@@ -98,8 +99,7 @@ const CoupleIntroCard: React.FC<CoupleIntroCardProps> = ({
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: false, amount: 0.3 }}
           transition={{ delay: 0.4, duration: 1 }}
-          className={`text-base font-light leading-relaxed text-justify px-2 md:px-6 ${isBride ? "text-rose-700" : "text-blue-700"
-            }`}
+          className={`text-base font-light leading-relaxed text-justify px-2 md:px-6 text-gray-800`}
         >
           {bio}
         </motion.div>

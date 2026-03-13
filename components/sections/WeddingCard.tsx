@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { motion, Variants } from "framer-motion";
 import Image from "next/image";
@@ -24,18 +24,18 @@ const WeddingCard = ({ data }: { data: any }) => {
     motherGroom: "",
     fatherBride: "",
     motherBride: "",
-  })
+  });
 
   useEffect(() => {
     if (data) {
       setWeddingInfo({ ...data });
     }
-  }, [data])
+  }, [data]);
 
   const fadeIn: Variants = {
     hidden: { opacity: 0, y: 30 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } },
-  }
+  };
 
   return (
     <section
@@ -51,9 +51,10 @@ const WeddingCard = ({ data }: { data: any }) => {
       {/* Overlay lớp phủ mịn hơn */}
       <div className="absolute inset-0 bg-gradient-to-b from-white/40 via-transparent to-white/40 backdrop-blur-[2px]"></div>
 
-      <div className="relative z-10 container mx-auto px-4 py-16 flex flex-col md:flex-row items-center
-       justify-center gap-8 lg:gap-12 space-y-6 md:space-y-0">
-
+      <div
+        className="relative z-10 container mx-auto px-4 py-16 flex flex-col md:flex-row items-center
+       justify-center gap-8 lg:gap-12 space-y-6 md:space-y-0"
+      >
         {/* THIỆP 1: THIỆP MỜI (Phía Trái) */}
         <motion.div
           variants={fadeIn}
@@ -82,14 +83,20 @@ const WeddingCard = ({ data }: { data: any }) => {
               {weddingInfo.bodyText}
             </p>
 
-            <div >
-              <h3 className="test font-dancing-script text-4xl text-rose-700 mb-2">{weddingInfo.groomName}</h3>
+            <div>
+              <h3 className="test font-dancing-script text-4xl mb-2" style={{ color: "#DC143C" }}>
+                {weddingInfo.groomName}
+              </h3>
               <span className="font-playfair text-xl text-stone-400">&</span>
-              <h3 className="test font-dancing-script text-4xl text-rose-700 mt-2">{weddingInfo.brideName}</h3>
+              <h3 className="test font-dancing-script text-4xl mt-2" style={{ color: "#DC143C" }}>
+                {weddingInfo.brideName}
+              </h3>
             </div>
 
             <div className="space-y-2 border-y border-stone-100 ">
-              <p className="text-sm font-medium tracking-widest">VÀO LÚC <span className="text-xl font-serif text-rose-800">10:00</span></p>
+              <p className="text-sm font-medium tracking-widest">
+                VÀO LÚC <span className="text-xl font-serif text-rose-800">10:00</span>
+              </p>
 
               <div className="flex items-center justify-center gap-4">
                 <div className="h-[1px] w-8 bg-stone-300"></div>
@@ -106,7 +113,6 @@ const WeddingCard = ({ data }: { data: any }) => {
             <p className="text-sm font-light italic text-stone-600 pt-4 lg:pt-6 leading-relaxed">
               {weddingInfo.welcomeMessage}
             </p>
-
           </motion.div>
         </motion.div>
 
@@ -124,53 +130,74 @@ const WeddingCard = ({ data }: { data: any }) => {
               whileHover={{ scale: 1.05 }}
               className="relative w-28 h-28 rounded-full border-4 border-white shadow-lg overflow-hidden"
             >
-              <Image src={"/avatar.jpg"} alt="Wedding" fill className="object-cover"
+              <Image
+                src={"/avatar.jpg"}
+                alt="Wedding"
+                fill
+                className="object-cover"
                 unoptimized={true}
               />
             </motion.div>
           </div>
 
           <div className="text-center space-y-6">
-            <h2 className="text-lg font-serif font-bold tracking-wider text-stone-800">TRÂN TRỌNG KÍNH MỜI</h2>
+            <h2 className="text-lg font-serif font-bold tracking-wider text-stone-800">
+              TRÂN TRỌNG KÍNH MỜI
+            </h2>
             <div className="py-2">
               <span className="text-rose-800 font-serif italic text-xl border-b border-rose-200 px-6">
                 Bạn
               </span>
             </div>
             <div className="space-y-1">
-              <p className="text-xs uppercase tracking-widest text-stone-500">Đến dự lễ thành hôn</p>
+              <p className="text-xs uppercase tracking-widest text-stone-500">
+                Đến dự lễ thành hôn
+              </p>
               <p className="text-lg font-serif italic text-rose-800">Của hai chúng tôi</p>
             </div>
 
             <div className="bg-stone-50 p-4 rounded-xl space-y-2">
               <p className="text-sm tracking-widest uppercase text-stone-600">Thời gian</p>
               <p className="text-xl font-bold text-stone-800">13:10 — 22.03.2026</p>
-              <p className="text-[10px] text-stone-400 italic font-light">Sự hiện diện của Quý vị là niềm vinh hạnh cho gia đình!</p>
+              <p className="text-[10px] text-stone-400 italic font-light">
+                Sự hiện diện của Quý vị là niềm vinh hạnh cho gia đình!
+              </p>
             </div>
 
             <div className="grid grid-cols-2 gap-4 pt-4 border-t border-stone-100">
               <div className="space-y-1">
-                <p className="text-[10px] font-bold uppercase text-rose-900 border-b border-rose-100 pb-1 mb-2">Nhà Trai</p>
-                <p className="text-[11px] leading-tight">Ông: <strong>{weddingInfo.fatherGroom}</strong></p>
-                <p className="text-[11px] leading-tight pb-2">Bà: <strong>{weddingInfo.motherGroom}</strong></p>
+                <p className="text-[10px] font-bold uppercase text-rose-900 border-b border-rose-100 pb-1 mb-2">
+                  Nhà Trai
+                </p>
+                <p className="text-[11px] leading-tight">
+                  Ông: <strong>{weddingInfo.fatherGroom}</strong>
+                </p>
+                <p className="text-[11px] leading-tight pb-2">
+                  Bà: <strong>{weddingInfo.motherGroom}</strong>
+                </p>
                 <p className="text-[10px] italic text-stone-500">Chú rể:</p>
                 <p className="text-sm font-bold text-rose-700">{weddingInfo.groomName}</p>
               </div>
 
               <div className="space-y-1">
-                <p className="text-[10px] font-bold uppercase text-rose-900 border-b border-rose-100 pb-1 mb-2">Nhà Gái</p>
-                <p className="text-[11px] leading-tight">Ông: <strong>{weddingInfo.fatherBride}</strong></p>
-                <p className="text-[11px] leading-tight pb-2">Bà: <strong>{weddingInfo.motherBride}</strong></p>
+                <p className="text-[10px] font-bold uppercase text-rose-900 border-b border-rose-100 pb-1 mb-2">
+                  Nhà Gái
+                </p>
+                <p className="text-[11px] leading-tight">
+                  Ông: <strong>{weddingInfo.fatherBride}</strong>
+                </p>
+                <p className="text-[11px] leading-tight pb-2">
+                  Bà: <strong>{weddingInfo.motherBride}</strong>
+                </p>
                 <p className="text-[10px] italic text-stone-500">Cô dâu:</p>
                 <p className="text-sm font-bold text-rose-700">{weddingInfo.brideName}</p>
               </div>
             </div>
           </div>
         </motion.div>
-
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default WeddingCard
+export default WeddingCard;

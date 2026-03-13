@@ -1,13 +1,12 @@
-"use client"
-import { motion } from "framer-motion"
+"use client";
+import { motion } from "framer-motion";
 
-import CountdownTimer from "@/components/CountdownTimer"
+import CountdownTimer from "@/components/CountdownTimer";
 
-import FloatingHearts from "../FloatingIcons"
-import { Heart } from "../Heart"
+import FloatingHearts from "../FloatingIcons";
+import { Heart } from "../Heart";
 
 const Hero = ({ heroData }: { heroData: any }) => {
-
   return (
     <section
       id="home"
@@ -36,6 +35,7 @@ const Hero = ({ heroData }: { heroData: any }) => {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: false, amount: 0.3 }}
               transition={{ duration: 1.2 }}
+              style={{ color: "white" }}
             >
               {heroData.brideName}
             </motion.h1>
@@ -57,6 +57,7 @@ const Hero = ({ heroData }: { heroData: any }) => {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: false, amount: 0.3 }}
               transition={{ duration: 1.2 }}
+              style={{ color: "white" }}
             >
               {heroData.groomName}
             </motion.h1>
@@ -116,7 +117,7 @@ const Hero = ({ heroData }: { heroData: any }) => {
         </div>
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default Hero
+export default Hero;

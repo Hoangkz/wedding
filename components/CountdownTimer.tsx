@@ -1,13 +1,13 @@
-"use client"
-import dayjs from "dayjs"
-import { useEffect, useState } from "react"
+"use client";
+import dayjs from "dayjs";
+import { useEffect, useState } from "react";
 
 // const TARGET_DATE = new Date("2025-11-21T10:00:00").getTime()
 
 const calculateTimeLeft = (weddingDate: string) => {
-  const date = dayjs(weddingDate)
-  const now = dayjs()
-  const distance = date.diff(now) // milliseconds
+  const date = dayjs(weddingDate);
+  const now = dayjs();
+  const distance = date.diff(now); // milliseconds
 
   if (distance <= 0) {
     return {
@@ -16,42 +16,42 @@ const calculateTimeLeft = (weddingDate: string) => {
       minutes: 0,
       seconds: 0,
       isOver: true,
-    }
+    };
   }
 
-  const days = date.diff(now, "day")
-  const hours = date.diff(now.add(days, "day"), "hour")
-  const minutes = date.diff(now.add(days, "day").add(hours, "hour"), "minute")
+  const days = date.diff(now, "day");
+  const hours = date.diff(now.add(days, "day"), "hour");
+  const minutes = date.diff(now.add(days, "day").add(hours, "hour"), "minute");
   const seconds = date.diff(
     now.add(days, "day").add(hours, "hour").add(minutes, "minute"),
-    "second"
-  )
+    "second",
+  );
 
-  return { days, hours, minutes, seconds, isOver: false }
-}
+  return { days, hours, minutes, seconds, isOver: false };
+};
 const CountdownTimer = ({ weddingDate }: { weddingDate: string }) => {
-  const [isClient, setIsClient] = useState(false)
+  const [isClient, setIsClient] = useState(false);
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,
     minutes: 0,
     seconds: 0,
     isOver: false,
-  })
+  });
 
   useEffect(() => {
-    setIsClient(true)
-  }, [])
+    setIsClient(true);
+  }, []);
 
   useEffect(() => {
-    if (!isClient) return
+    if (!isClient) return;
 
     const timer = setInterval(() => {
-      setTimeLeft(calculateTimeLeft(weddingDate))
-    }, 1000)
+      setTimeLeft(calculateTimeLeft(weddingDate));
+    }, 1000);
 
-    return () => clearInterval(timer)
-  }, [isClient, weddingDate])
+    return () => clearInterval(timer);
+  }, [isClient, weddingDate]);
 
   if (!isClient) {
     return (
@@ -65,21 +65,21 @@ const CountdownTimer = ({ weddingDate }: { weddingDate: string }) => {
           />
         ))}
       </div>
-    )
+    );
   }
 
   if (timeLeft.isOver) {
-    return <div
-      className="text-xl font-light tracking-widest uppercase mb-8 opacity-75"
-    >Huy Liên</div>
+    return (
+      <div className="text-xl font-light tracking-widest uppercase mb-8 opacity-75">Huy Liên</div>
+    );
   }
 
   const timerUnits = [
-    { value: timeLeft.days, label: "Ngày", className: "border-teal-500 text-teal-500" },
-    { value: timeLeft.hours, label: "Giờ", className: "border-teal-500 text-teal-500" },
-    { value: timeLeft.minutes, label: "Phút", className: "border-teal-500 text-teal-500" },
-    { value: timeLeft.seconds, label: "Giây", className: "border-red-500 text-red-500" },
-  ]
+    { value: timeLeft.days, label: "Ngày", className: "border-white text-white" },
+    { value: timeLeft.hours, label: "Giờ", className: "border-white text-white" },
+    { value: timeLeft.minutes, label: "Phút", className: "border-white text-white" },
+    { value: timeLeft.seconds, label: "Giây", className: "border-white text-white" },
+  ];
 
   return (
     <div className="flex justify-center space-x-2 sm:space-x-4 md:space-x-8 mt-6">
@@ -103,7 +103,7 @@ const CountdownTimer = ({ weddingDate }: { weddingDate: string }) => {
         </div>
       ))}
     </div>
-  )
-}
+  );
+};
 
-export default CountdownTimer
+export default CountdownTimer;
