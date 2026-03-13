@@ -46,18 +46,18 @@ const IntroPage = ({ brideData, groomData }: any) => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 1 }}
             >
-              <h1 className="test text-center font-bold" style={{ fontSize: 55, color: "#DC143C" }}>
+              <h1 className="test text-center font-bold" style={{ fontSize: 55, color: "#ffffff" }}>
                 Cô dâu
               </h1>
               <motion.h1
                 className="test text-center mx-4 sm:mx-12 font-bold"
-                style={{ fontSize: 55, color: "#DC143C" }}
+                style={{ fontSize: 55, color: "#ffffff" }}
                 animate={{ scale: [1, 1.3, 1] }}
                 transition={{ repeat: Infinity, duration: 2 }}
               >
                 &
               </motion.h1>
-              <h1 className="test text-center font-bold" style={{ fontSize: 55, color: "#DC143C" }}>
+              <h1 className="test text-center font-bold" style={{ fontSize: 55, color: "#ffffff" }}>
                 Chú rể
               </h1>
             </motion.div>

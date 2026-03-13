@@ -1,16 +1,16 @@
-"use client"
-import { motion } from "framer-motion"
-import Image from "next/image"
-import React from "react"
+"use client";
+import { motion } from "framer-motion";
+import Image from "next/image";
+import React from "react";
 
 type CoupleIntroCardProps = {
-  type: string
-  name: string
-  imageSrc: string
-  fatherName: string
-  motherName: string
-  bio: string
-}
+  type: string;
+  name: string;
+  imageSrc: string;
+  fatherName: string;
+  motherName: string;
+  bio: string;
+};
 
 const CoupleIntroCard: React.FC<CoupleIntroCardProps> = ({
   type,
@@ -20,9 +20,9 @@ const CoupleIntroCard: React.FC<CoupleIntroCardProps> = ({
   motherName,
   bio,
 }) => {
-  const isBride = type === "bride"
-  const accentColor = isBride ? "from-rose-400 to-rose-600" : "from-sky-400 to-blue-600"
-  const title = isBride ? "CÔ DÂU" : "CHÚ RỂ"
+  const isBride = type === "bride";
+  const accentColor = isBride ? "from-rose-400 to-rose-600" : "from-sky-400 to-blue-600";
+  const title = isBride ? "CÔ DÂU" : "CHÚ RỂ";
 
   return (
     <motion.div
@@ -35,13 +35,13 @@ const CoupleIntroCard: React.FC<CoupleIntroCardProps> = ({
         max-w-sm sm:max-w-md 
         lg:w-[44%]
         p-6 rounded-3xl shadow-2xl bg-white border border-gray-200 
-        flex-shrink-0`}    >
+        flex-shrink-0`}
+    >
       <div
         className={`absolute inset-0 rounded-3xl bg-gradient-to-br ${accentColor} opacity-0 blur-xl`}
       ></div>
 
       <div className="relative z-10 text-center text-gray-800">
-
         <h2
           className={`text-lg md:text-xl font-semibold tracking-widest uppercase mb-4`}
           style={{ color: "#DC143C" }}
@@ -56,15 +56,16 @@ const CoupleIntroCard: React.FC<CoupleIntroCardProps> = ({
           transition={{ duration: 1, ease: "easeOut" }}
           className="mx-auto w-44 h-44 md:w-52 md:h-52 rounded-full overflow-hidden border-[6px] border-white shadow-[0_0_25px_rgba(0,0,0,0.15)] mb-6 relative"
         >
-          {imageSrc && <Image
-            src={imageSrc}
-            alt={name}
-            fill
-            className="object-cover"
-            sizes="(max-width: 768px) 176px, 208px"
-            unoptimized={true}
-          />
-          }
+          {imageSrc && (
+            <Image
+              src={imageSrc}
+              alt={name}
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 176px, 208px"
+              unoptimized={true}
+            />
+          )}
           <div className="absolute inset-0 rounded-full ring-2 ring-white/70 ring-offset-4 ring-offset-transparent"></div>
         </motion.div>
 
@@ -73,7 +74,7 @@ const CoupleIntroCard: React.FC<CoupleIntroCardProps> = ({
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: false, amount: 0.2 }}
           transition={{ delay: 0.2, duration: 1 }}
-          className="test  text-4xl md:text-5xl font-bold mb-4"
+          className="test text-2xl md:text-3xl font-bold mb-4"
           style={{ color: "#DC143C" }}
         >
           {name}
@@ -99,7 +100,7 @@ const CoupleIntroCard: React.FC<CoupleIntroCardProps> = ({
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: false, amount: 0.3 }}
           transition={{ delay: 0.4, duration: 1 }}
-          className={`text-base font-light leading-relaxed text-justify px-2 md:px-6 text-gray-800`}
+          className={`text-base font-light leading-relaxed text-justify px-2 md:px-6 text-gray-800 mb-6 h-32`}
         >
           {bio}
         </motion.div>
@@ -109,11 +110,11 @@ const CoupleIntroCard: React.FC<CoupleIntroCardProps> = ({
           whileInView={{ scaleX: 1 }}
           viewport={{ once: false, amount: 0.3 }}
           transition={{ delay: 0.5, duration: 1 }}
-          className={`mt-6 mx-auto w-2/3 h-[2px] bg-gradient-to-r ${accentColor} rounded-full origin-left`}
+          className={`mt-6 mx-auto w-1/2 h-[2px] bg-gradient-to-r ${accentColor} rounded-full origin-center`}
         ></motion.div>
       </div>
     </motion.div>
-  )
-}
+  );
+};
 
-export default CoupleIntroCard
+export default CoupleIntroCard;

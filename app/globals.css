@@ -193,11 +193,11 @@
   line-height: 1.1;
   font-family: "Great Vibes", cursive;
   text-transform: capitalize;
-  font-size: 50px;
+  font-size: auto;
   display: block;
 }
-.fontfamily{
-  font-family: 'Book Antiqua', Palatino, 'Palatino Linotype', 'Bookman Old Style', Georgia, serif;
+.fontfamily {
+  font-family: "Book Antiqua", Palatino, "Palatino Linotype", "Bookman Old Style", Georgia, serif;
   font-weight: 500;
   visibility: visible;
   box-sizing: border-box;
